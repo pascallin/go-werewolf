@@ -1,9 +1,8 @@
-package command
+package cli
 
 import (
 	"fmt"
 	"github.com/urfave/cli/v2"
-	"github.com/pascallin/go-wolvesgame/command/terminal"
 )
 
 var flags = []cli.Flag{
@@ -37,12 +36,12 @@ var action = func(ctx *cli.Context) error {
 	fmt.Println("游戏名称:", name)
 	fmt.Println("参与人数:", people)
 	// 创建交互式终端
-	terminal.Console()
+	Console()
 	return nil
 }
 
 var create = cli.Command{
-	Name:    "create",
+	Name:    "start",
 	Aliases: []string{"c"},
 	Usage:   "创建一个游戏",
 	Flags:   flags,

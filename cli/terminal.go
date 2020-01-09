@@ -1,12 +1,15 @@
-package terminal
+package cli
 
 import (
 	"fmt"
 	"github.com/chzyer/readline"
+	"github.com/pascallin/go-wolvesgame/cli/command"
 	"github.com/urfave/cli/v2"
 	"io"
 	"strings"
-)
+
+	"github.com/pascallin/go-wolvesgame/game"
+	)
 
 func filterInput(r rune) (rune, bool) {
 	switch r {
@@ -18,16 +21,19 @@ func filterInput(r rune) (rune, bool) {
 }
 
 func Console() {
+	game := game.CreateGame()
+	game.PrintGameStatus()
+
 	console := cli.NewApp()
-	console.Commands = commands
+	console.Commands = command.commands
 	console.Action = func(c *cli.Context) error {
-		fmt.Println("Command not found. Type 'help' for a list of commands.")
+		fmt.Println("Command not found. Type 'help' for a list of command.")
 		return nil
 	}
 	l, _ := readline.NewEx(&readline.Config{
 		Prompt: "\033[31mWerwolf»\033[0m ",
 		//HistoryFile:     "/tmp/readline.tmp",
-		AutoComplete:    completer,
+		AutoComplete:    cli2.completer,
 		InterruptPrompt: "^C",
 		EOFPrompt:       "exit",
 

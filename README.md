@@ -4,13 +4,40 @@ echo said he is a good man
 ## werewolf-cli
 
 ```shell script
-[-c|create] [name]
+start  // enter game
+```
+
+## cli interaction
+
+```
+app
+|- create
+    |- restart
+    |- [game command]
+|- join
+    |- [game command]
+|- [game command] 
+    |- say
+    |- [skills]
+|- exit
+|- help
 ```
 
 ## TODO list
-game
+logical
 - players connection
-- game round
+- room
+- game lifecycle
+
+cli
+- basic gui with interaction
+- cli command
+- room command
+- game command
+
+network
+- socket
+- lan scan game
 
 experience
 - game history show

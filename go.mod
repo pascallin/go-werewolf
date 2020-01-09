@@ -4,6 +4,9 @@ go 1.13
 
 require (
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e
+	github.com/jroimartin/gocui v0.4.0 // indirect
+	github.com/mattn/go-runewidth v0.0.7 // indirect
+	github.com/nsf/termbox-go v0.0.0-20191229070316-58d4fcbce2a7 // indirect
 	github.com/satori/go.uuid v1.2.0
 	github.com/sirupsen/logrus v1.4.2 // indirect
 	github.com/urfave/cli/v2 v2.1.1

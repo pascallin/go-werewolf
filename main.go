@@ -1,12 +1,9 @@
 package main
 
 import (
-	//"github.com/pascallin/go-wolvesgame/command"
-	"github.com/pascallin/go-wolvesgame/game"
+	"github.com/pascallin/go-wolvesgame/cli"
 )
 
 func main() {
-	//command.Cli()
-
-	game.CreateGame()
+	cli.Cli()
 }

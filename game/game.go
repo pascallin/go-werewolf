@@ -6,8 +6,8 @@ import (
 	"math/rand"
 	"strconv"
 
-	"github.com/pascallin/go-wolvesgame/game/role"
 	"github.com/pascallin/go-wolvesgame/game/player"
+	"github.com/pascallin/go-wolvesgame/game/role"
 )
 
 type Game struct {
@@ -103,6 +103,5 @@ func CreateGame() Game {
 	}
 
 	game, _ = game.GameStart()
-	game.PrintGameStatus()
 	return game
 }
