@@ -5,10 +5,6 @@ type RoleFactory struct {
 
 func (f RoleFactory) CreateRole(roleType string) Role {
 	switch roleType {
-	case "werewolf":
-		return &werewolf{"狼人", 1,}
-	case "villager":
-		return &villager{"村民", 1,}
 	case "seer":
 		return &seer{"预言家", 1,}
 	case "witch":

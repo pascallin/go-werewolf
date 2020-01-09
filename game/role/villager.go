@@ -1,26 +1,10 @@
 package role
 
-type villager struct {
-	//村民
-	name string
-	life int
+type Villager struct {
+	RoleClass
 }
 
-func (v *villager) IsAlive() bool {
-	if v.life <= 0 {
-		return false
-	} else {
-		return true
-	}
-}
-func (v *villager) IsGood() bool {
-	return false
-}
-func (v *villager) Kill()  {
-	v.life --
-	return
-}
-func (v *villager) Exile()  {
-	v.life --
-	return
+func NewVillager() RoleClass {
+	var role = New("村民(Villager)",  "GOOD")
+	return role
 }

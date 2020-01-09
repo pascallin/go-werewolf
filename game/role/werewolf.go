@@ -1,25 +1,10 @@
 package role
 
-type werewolf struct {
-	name string
-	life int
+type WereWolf struct {
+	RoleClass
 }
 
-func (w *werewolf) IsAlive() bool {
-	if w.life <= 0 {
-		return false
-	} else {
-		return true
-	}
-}
-func (w *werewolf) IsGood() bool {
-	return false
-}
-func (w *werewolf) Kill()  {
-	w.life --
-	return
-}
-func (w *werewolf) Exile()  {
-	w.life --
-	return
+func NewWereWolf() RoleClass {
+	var role = New("狼人(WereWolf)",  "BAD")
+	return role
 }
