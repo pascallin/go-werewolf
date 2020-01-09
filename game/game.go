@@ -8,7 +8,7 @@ import (
 	"math/rand"
 	"strconv"
 	"time"
-	"werewolf-cli/game/role"
+	"github.com/pascallin/go-wolvesgame/game/role"
 )
 
 type roles struct {
