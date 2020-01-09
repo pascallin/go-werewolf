@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	cli.Cli()
+	cli.Console()
 }
