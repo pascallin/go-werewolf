@@ -1,4 +1,4 @@
-package main
+package game
 
 import (
 	"errors"
@@ -87,7 +87,7 @@ func genRoles() []role.RoleClass {
 	return roles
 }
 
-func main() {
+func CreateGame() Game {
 	game := Game{
 		status: "ready",
 		round: 0,
@@ -104,4 +104,5 @@ func main() {
 
 	game, _ = game.GameStart()
 	game.PrintGameStatus()
+	return game
 }
