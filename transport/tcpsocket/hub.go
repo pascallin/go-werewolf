@@ -30,6 +30,7 @@ func (h *Hub) run() {
 			fmt.Println("hub register")
 			h.clients[client] = true
 			go client.writePump()
+			go client.readPump()
 		case client := <-h.unregister:
 			if _, ok := h.clients[client]; ok {
 				delete(h.clients, client)
