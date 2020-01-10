@@ -36,6 +36,7 @@ var createAction = func(ctx *cli.Context) error {
 	game := game.CreateGame()
 	c.SetGame(game)
 	go tcpsocket.NewServer()
+	c.SetSocket(tcpsocket.NewClient())
 	return nil
 }
 
@@ -52,6 +53,7 @@ var joinCommand = &cli.Command{
 	Aliases: []string{"j"},
 	Usage:   "加入游戏",
 	Action: func(ctx *cli.Context) error {
+		// TODO: 判断是否在游戏中
 		c := context.GetContext()
 		c.SetSocket(tcpsocket.NewClient())
 		return nil

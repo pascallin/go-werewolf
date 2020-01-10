@@ -6,25 +6,6 @@ import (
 	"net"
 )
 
-type Client struct {
-	hub *Hub
-	conn net.Conn
-	send chan []byte
-}
-
-func (c *Client) writePump() {
-	for {
-		select {
-		case message, ok := <-c.send:
-			if !ok {
-				// TODO
-				return
-			}
-			Send(c.conn, string(message))
-		}
-	}
-}
-
 func NewClient() net.Conn {
 	// connect to this socket
 	conn, _ := net.Dial("tcp", "127.0.0.1:8080")

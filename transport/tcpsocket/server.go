@@ -7,7 +7,7 @@ import (
 	"net"
 )
 
-var hub Hub
+var hub = newHub()
 
 func handleConnection(conn net.Conn) {
 	bufferBytes, err := bufio.NewReader(conn).ReadBytes('\n')
@@ -15,6 +15,7 @@ func handleConnection(conn net.Conn) {
 	if err != nil {
 		log.Println("client left..")
 		conn.Close()
+
 		return
 	}
 
@@ -22,7 +23,7 @@ func handleConnection(conn net.Conn) {
 	clientAddr := conn.RemoteAddr().String()
 	response := fmt.Sprintf(message + " from " + clientAddr + "\n")
 
-	//conn.Write([]byte(response))
+	fmt.Println("tcp server handleConnection")
 	hub.broadcast <- []byte(response)
 
 	go handleConnection(conn)
@@ -34,7 +35,6 @@ func NewServer() {
 		log.Fatal("tcp server listener error:", err)
 	}
 
-	hub := newHub()
 	go hub.run()
 
 	for {
