@@ -9,6 +9,7 @@ var Commands = []*cli.Command{
 	createCommand,
 	joinCommand,
 	// Game Command
+	startCommand,
 	statusCommand,
 	sayCommand,
 	voteCommand,

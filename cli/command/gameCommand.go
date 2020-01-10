@@ -16,6 +16,17 @@ var statusCommand = &cli.Command{
 	},
 }
 
+var startCommand = &cli.Command{
+	Name:    "start",
+	Aliases: []string{"v"},
+	Usage:   "开始游戏",
+	Action: func(ctx *cli.Context) error {
+		game := context.GetContext().GetGame()
+		game.GameStart()
+		return nil
+	},
+}
+
 var sayCommand = &cli.Command{
 	Name:    "say",
 	Aliases: []string{"s"},

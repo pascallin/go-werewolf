@@ -100,6 +100,5 @@ func CreateGame() Game {
 		game.JoinPlayer(p)
 	}
 
-	game.GameStart()
 	return game
 }
