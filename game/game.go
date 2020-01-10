@@ -19,22 +19,21 @@ type Game struct {
 	roles []role.RoleClass `json:"roles"`
 }
 
-func (g Game) GameStart() (Game, error) {
+func (g *Game) GameStart() error {
 	if g.playersCount != g.participants {
-		return g, errors.New("no enough players")
+		return errors.New("no enough players")
 	}
 	g.assignRoles()
-	return g, nil
+	return nil
 }
 
 func (g Game) PrintGameStatus() {
 	fmt.Printf("%+v", g)
 }
 
-func (g Game) JoinPlayer(player player.Player) Game {
+func (g *Game) JoinPlayer(player player.Player) {
 	g.participants += 1
 	g.players = append(g.players, player)
-	return g
 }
 
 func genRandomList(length int) ([]int, error) {
@@ -51,12 +50,11 @@ func genRandomList(length int) ([]int, error) {
 	}
 	return list, nil
 }
-func (g Game) assignRoles() Game {
+func (g *Game) assignRoles() {
 	randomList, _ := genRandomList(g.participants)
 	for i, _ := range g.players {
-		g.players[i] = g.players[i].SetRole(g.roles[randomList[i]])
+		g.players[i].SetRole(g.roles[randomList[i]])
 	}
-	return g
 }
 
 //for temporary
@@ -99,9 +97,9 @@ func CreateGame() Game {
 
 	players := genPlayers(game.playersCount)
 	for _, p := range players {
-		game = game.JoinPlayer(p)
+		game.JoinPlayer(p)
 	}
 
-	game, _ = game.GameStart()
+	game.GameStart()
 	return game
 }

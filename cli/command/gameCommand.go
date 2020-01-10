@@ -2,8 +2,19 @@ package command
 
 import (
 	"fmt"
+	"github.com/pascallin/go-wolvesgame/context"
 	"github.com/urfave/cli/v2"
 )
+
+var statusCommand = &cli.Command{
+	Name:    "status",
+	Aliases: []string{"v"},
+	Usage:   "显示游戏状态",
+	Action: func(ctx *cli.Context) error {
+		context.GetContext().GetGame().PrintGameStatus()
+		return nil
+	},
+}
 
 var sayCommand = &cli.Command{
 	Name:    "say",

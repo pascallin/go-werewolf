@@ -30,9 +30,8 @@ func (player Player) Exile() {
 	return
 }
 
-func (player Player) SetRole(r role.RoleClass) Player {
+func (player *Player) SetRole(r role.RoleClass) {
 	player.role = r
-	return player
 }
 
 func NewPlayer(name string) Player {

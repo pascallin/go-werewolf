@@ -2,6 +2,8 @@ package command
 
 import (
 	"fmt"
+	"github.com/pascallin/go-wolvesgame/context"
+	"github.com/pascallin/go-wolvesgame/game"
 	"github.com/urfave/cli/v2"
 	"os"
 )
@@ -35,7 +37,11 @@ var createAction = func(ctx *cli.Context) error {
 	fmt.Println("开放端口:", port)
 	fmt.Println("游戏名称:", name)
 	fmt.Println("参与人数:", people)
-	// TODO: create game
+
+	c := context.GetContext()
+	game := game.CreateGame()
+	c.SetGame(game)
+
 	return nil
 }
 
