@@ -1,8 +1,12 @@
 package tcpsocket
 
 import (
+	"bytes"
 	"fmt"
+	"github.com/gorilla/websocket"
+	"log"
 	"net"
+	"time"
 )
 
 type Hub struct {
@@ -64,5 +68,20 @@ func (c *Client) writePump() {
 			}
 			Send(c.conn, string(message))
 		}
+	}
+}
+
+func (c *Client) readPump() {
+	defer func() {
+		c.hub.unregister <- c
+		c.conn.Close()
+	}()
+	for {
+		_, message, err := c.conn.ReadMessage()
+		if err != nil {
+			// TODO: error handler
+			break
+		}
+		c.hub.broadcast <- message
 	}
 }
