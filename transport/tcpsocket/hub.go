@@ -1,12 +1,9 @@
 package tcpsocket
 
 import (
-	"bytes"
+	"bufio"
 	"fmt"
-	"github.com/gorilla/websocket"
-	"log"
 	"net"
-	"time"
 )
 
 type Hub struct {
@@ -77,11 +74,11 @@ func (c *Client) readPump() {
 		c.conn.Close()
 	}()
 	for {
-		_, message, err := c.conn.ReadMessage()
+		message, err := bufio.NewReader(c.conn).ReadString('\n')
 		if err != nil {
 			// TODO: error handler
 			break
 		}
-		c.hub.broadcast <- message
+		c.hub.broadcast <- []byte(message)
 	}
 }
