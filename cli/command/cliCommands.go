@@ -6,6 +6,7 @@ import (
 	"github.com/pascallin/go-wolvesgame/game"
 	"github.com/urfave/cli/v2"
 	"os"
+	"github.com/pascallin/go-wolvesgame/transport/tcpsocket"
 )
 
 var createFlags = []cli.Flag{
@@ -31,17 +32,10 @@ var createFlags = []cli.Flag{
 }
 
 var createAction = func(ctx *cli.Context) error {
-	port := ctx.Int("port")
-	people := ctx.Int("people")
-	name := ctx.String("name")
-	fmt.Println("开放端口:", port)
-	fmt.Println("游戏名称:", name)
-	fmt.Println("参与人数:", people)
-
 	c := context.GetContext()
 	game := game.CreateGame()
 	c.SetGame(game)
-
+	go tcpsocket.NewServer()
 	return nil
 }
 
@@ -58,7 +52,8 @@ var joinCommand = &cli.Command{
 	Aliases: []string{"j"},
 	Usage:   "加入游戏",
 	Action: func(ctx *cli.Context) error {
-		// TODO: join game
+		c := context.GetContext()
+		c.SetSocket(tcpsocket.NewClient())
 		return nil
 	},
 }
@@ -67,7 +62,6 @@ var exitCommand = &cli.Command{
 	Name:  "exit",
 	Usage: "退出",
 	Action: func(ctx *cli.Context) error {
-		// TODO: exit
 		fmt.Println("退出游戏")
 		os.Exit(0)
 		return nil

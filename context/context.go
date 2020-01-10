@@ -1,6 +1,7 @@
 package context
 
 import (
+	"net"
 	"sync"
 
 	"github.com/pascallin/go-wolvesgame/game"
@@ -8,6 +9,7 @@ import (
 
 type context struct {
 	game game.Game
+	socket net.Conn
 }
 
 func (c *context) SetGame(game game.Game) {
@@ -15,6 +17,12 @@ func (c *context) SetGame(game game.Game) {
 }
 func (c context) GetGame() game.Game {
 	return c.game
+}
+func (c *context) SetSocket(socket net.Conn) {
+	c.socket = socket
+}
+func (c context) GetSocket() net.Conn {
+	return c.socket
 }
 
 var instance *context

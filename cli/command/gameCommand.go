@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/pascallin/go-wolvesgame/context"
 	"github.com/urfave/cli/v2"
+	"github.com/pascallin/go-wolvesgame/transport/tcpsocket"
+	"strings"
 )
 
 var statusCommand = &cli.Command{
@@ -21,8 +23,17 @@ var startCommand = &cli.Command{
 	Aliases: []string{"v"},
 	Usage:   "开始游戏",
 	Action: func(ctx *cli.Context) error {
+		// add game
 		game := context.GetContext().GetGame()
 		game.GameStart()
+
+		// run socket server
+		go tcpsocket.NewServer()
+
+		// create socket client
+		c := context.GetContext()
+		c.SetSocket(tcpsocket.NewClient())
+
 		return nil
 	},
 }
@@ -32,17 +43,13 @@ var sayCommand = &cli.Command{
 	Aliases: []string{"s"},
 	Usage:   "发言",
 	Action: func(ctx *cli.Context) error {
-		msg := ctx.Args().Get(0)
-		if len(msg) == 0 {
+		if ctx.Args().Len() == 0 {
 			fmt.Println("Error:发言内容不能为空！")
 			return nil
 		}
-		// TODO: send msg
-		//if err != nil {
-		//	fmt.Println(err)
-		//	os.Exit(1)
-		//}
-		fmt.Println("你说：", msg)
+		msg := ctx.Args().Slice()
+		c := context.GetContext()
+		go tcpsocket.Send(c.GetSocket(), strings.Join(msg, " "))
 		return nil
 	},
 }
