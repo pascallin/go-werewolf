@@ -14,15 +14,6 @@ var (
 	console cli.App
 )
 
-func filterInput(r rune) (rune, bool) {
-	switch r {
-	// block CtrlZ feature
-	case readline.CharCtrlZ:
-		return r, false
-	}
-	return r, true
-}
-
 func terminal() error {
 	cli.AppHelpTemplate = `{{if .Commands}}{{range .Commands}}{{if not .HideHelp}}{{join .Names ", "}}{{ "\t"}}{{.Usage}}{{ "\n" }}{{end}}{{end}}{{end}}`
 	console := cli.NewApp()
@@ -35,15 +26,7 @@ func terminal() error {
 		fmt.Println("Command not found. Type 'help' for a list of command.")
 		return nil
 	}
-	l, _ := readline.NewEx(&readline.Config{
-		Prompt: "\033[31mWerwolf»\033[0m ",
-		//HistoryFile:     "/tmp/readline.tmp",
-		AutoComplete:        command.Completer,
-		InterruptPrompt:     "^C",
-		EOFPrompt:           "exit",
-		HistorySearchFold:   true,
-		FuncFilterInputRune: filterInput,
-	})
+	l := getReadline()
 
 	for {
 		line, err := l.Readline()

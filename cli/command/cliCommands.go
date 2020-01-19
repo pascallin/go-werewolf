@@ -6,7 +6,7 @@ import (
 	"github.com/pascallin/go-wolvesgame/game"
 	"github.com/urfave/cli/v2"
 	"os"
-	"github.com/pascallin/go-wolvesgame/transport/tcpsocket"
+	"github.com/pascallin/go-wolvesgame/transport/tcp"
 )
 
 var createFlags = []cli.Flag{
@@ -35,8 +35,8 @@ var createAction = func(ctx *cli.Context) error {
 	c := context.GetContext()
 	game := game.CreateGame()
 	c.SetGame(game)
-	go tcpsocket.NewServer()
-	c.SetSocket(tcpsocket.NewClient())
+	c.SetTcpServer(tcp.NewServer())
+	c.SetTcpClient(tcp.NewClient())
 	return nil
 }
 
@@ -55,7 +55,7 @@ var joinCommand = &cli.Command{
 	Action: func(ctx *cli.Context) error {
 		// TODO: 判断是否在游戏中
 		c := context.GetContext()
-		c.SetSocket(tcpsocket.NewClient())
+		c.SetTcpClient(tcp.NewClient())
 		return nil
 	},
 }

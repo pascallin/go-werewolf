@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/pascallin/go-wolvesgame/context"
 	"github.com/urfave/cli/v2"
-	"github.com/pascallin/go-wolvesgame/transport/tcpsocket"
+	"github.com/pascallin/go-wolvesgame/transport/tcp"
 	"strings"
 )
 
@@ -28,11 +28,11 @@ var startCommand = &cli.Command{
 		game.GameStart()
 
 		// run socket server
-		go tcpsocket.NewServer()
+		go tcp.NewServer()
 
 		// create socket client
 		c := context.GetContext()
-		c.SetSocket(tcpsocket.NewClient())
+		c.SetTcpClient(tcp.NewClient())
 
 		return nil
 	},
@@ -49,7 +49,8 @@ var sayCommand = &cli.Command{
 		}
 		msg := ctx.Args().Slice()
 		c := context.GetContext()
-		go tcpsocket.Send(c.GetSocket(), strings.Join(msg, " "))
+		client := c.GetTcpClient()
+		go client.Send([]byte(strings.Join(msg, " ")))
 		return nil
 	},
 }
