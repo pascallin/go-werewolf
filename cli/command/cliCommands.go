@@ -2,11 +2,12 @@ package command
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/pascallin/go-wolvesgame/context"
 	"github.com/pascallin/go-wolvesgame/game"
-	"github.com/urfave/cli/v2"
-	"os"
 	"github.com/pascallin/go-wolvesgame/transport/tcp"
+	"github.com/urfave/cli/v2"
 )
 
 var createFlags = []cli.Flag{
@@ -31,21 +32,19 @@ var createFlags = []cli.Flag{
 	},
 }
 
-var createAction = func(ctx *cli.Context) error {
-	c := context.GetContext()
-	game := game.CreateGame()
-	c.SetGame(game)
-	c.SetTcpServer(tcp.NewServer())
-	c.SetTcpClient(tcp.NewClient())
-	return nil
-}
-
 var createCommand = &cli.Command{
 	Name:    "create",
 	Aliases: []string{"c"},
 	Usage:   "创建游戏",
 	Flags:   createFlags,
-	Action:  createAction,
+	Action: func(ctx *cli.Context) error {
+		c := context.GetContext()
+		game := game.CreateGame()
+		c.SetGame(game)
+		c.SetTcpServer(tcp.NewServer())
+		c.SetTcpClient(tcp.NewClient())
+		return nil
+	},
 }
 
 var joinCommand = &cli.Command{

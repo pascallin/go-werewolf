@@ -4,8 +4,9 @@ import (
 	"log"
 	"net"
 )
+
 type Server struct {
-	hub *Hub
+	hub      *Hub
 	listener net.Listener
 }
 
@@ -30,11 +31,12 @@ func (s *Server) listen() {
 		conn, err := s.listener.Accept()
 		if err != nil {
 			log.Fatal("tcp server accept error", err)
+			continue
 		}
 
 		// create server side client
 		client := &HubClient{
-			hub: s.hub,
+			hub:  s.hub,
 			conn: conn,
 			send: make(chan []byte, 256),
 		}

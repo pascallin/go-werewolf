@@ -2,10 +2,11 @@ package command
 
 import (
 	"fmt"
-	"github.com/pascallin/go-wolvesgame/context"
-	"github.com/urfave/cli/v2"
-	"github.com/pascallin/go-wolvesgame/transport/tcp"
 	"strings"
+
+	"github.com/pascallin/go-wolvesgame/context"
+	"github.com/pascallin/go-wolvesgame/transport/tcp"
+	"github.com/urfave/cli/v2"
 )
 
 var statusCommand = &cli.Command{
@@ -50,7 +51,7 @@ var sayCommand = &cli.Command{
 		msg := ctx.Args().Slice()
 		c := context.GetContext()
 		client := c.GetTcpClient()
-		go client.Send([]byte(strings.Join(msg, " ")))
+		go client.Send(strings.Join(msg, " "))
 		return nil
 	},
 }
