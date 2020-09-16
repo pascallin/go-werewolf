@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/pascallin/go-wolvesgame/context"
+	"github.com/pascallin/go-wolvesgame/internal/context"
 	"github.com/pascallin/go-wolvesgame/internal/game"
 	"github.com/pascallin/go-wolvesgame/internal/transport/tcp"
 	"github.com/urfave/cli/v2"
