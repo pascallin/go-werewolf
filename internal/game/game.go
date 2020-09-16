@@ -6,17 +6,17 @@ import (
 	"math/rand"
 	"strconv"
 
-	"github.com/pascallin/go-wolvesgame/game/player"
-	"github.com/pascallin/go-wolvesgame/game/role"
+	"github.com/pascallin/go-wolvesgame/internal/game/player"
+	"github.com/pascallin/go-wolvesgame/internal/game/role"
 )
 
 type Game struct {
-	status string `json:"status"`
-	round int `json:"round"`
-	playersCount int `json:"playersCount"`
-	participants int `json:"participants"`
+	status string           `json:"status"`
+	round int               `json:"round"`
+	playersCount int        `json:"playersCount"`
+	participants int        `json:"participants"`
 	players []player.Player `json:"players"`
-	roles []role.RoleClass `json:"roles"`
+	roles []role.RoleClass  `json:"roles"`
 }
 
 func (g *Game) GameStart() error {

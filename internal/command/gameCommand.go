@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/pascallin/go-wolvesgame/context"
-	"github.com/pascallin/go-wolvesgame/transport/tcp"
+	"github.com/pascallin/go-wolvesgame/internal/transport/tcp"
 	"github.com/urfave/cli/v2"
 )
 

@@ -5,8 +5,8 @@ import (
 	"os"
 
 	"github.com/pascallin/go-wolvesgame/context"
-	"github.com/pascallin/go-wolvesgame/game"
-	"github.com/pascallin/go-wolvesgame/transport/tcp"
+	"github.com/pascallin/go-wolvesgame/internal/game"
+	"github.com/pascallin/go-wolvesgame/internal/transport/tcp"
 	"github.com/urfave/cli/v2"
 )
 

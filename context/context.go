@@ -3,12 +3,12 @@ package context
 import (
 	"sync"
 
-	"github.com/pascallin/go-wolvesgame/game"
-	"github.com/pascallin/go-wolvesgame/transport/tcp"
+	"github.com/pascallin/go-wolvesgame/internal/game"
+	"github.com/pascallin/go-wolvesgame/internal/transport/tcp"
 )
 
 type context struct {
-	game game.Game
+	game      game.Game
 	tcpClient *tcp.Client
 	tcpServer *tcp.Server
 }

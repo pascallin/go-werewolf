@@ -1,7 +1,7 @@
 package round
 
 import (
-	"github.com/pascallin/go-wolvesgame/game/role"
+	"github.com/pascallin/go-wolvesgame/internal/game/role"
 )
 
 type Round struct {

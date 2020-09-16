@@ -1,8 +1,8 @@
-package cli
+package console
 
 import (
 	"github.com/chzyer/readline"
-	"github.com/pascallin/go-wolvesgame/cli/command"
+	"github.com/pascallin/go-wolvesgame/internal/command"
 )
 
 func filterInput(r rune) (rune, bool) {

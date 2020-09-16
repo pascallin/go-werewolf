@@ -1,7 +1,7 @@
 package player
 
 import (
-	"github.com/pascallin/go-wolvesgame/game/role"
+	"github.com/pascallin/go-wolvesgame/internal/game/role"
 	uuid "github.com/satori/go.uuid"
 )
 

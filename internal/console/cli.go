@@ -1,13 +1,14 @@
-package cli
+package console
 
 import (
 	"fmt"
-	"github.com/chzyer/readline"
-	"github.com/pascallin/go-wolvesgame/cli/command"
-	"github.com/urfave/cli/v2"
 	"io"
 	"os"
 	"strings"
+
+	"github.com/chzyer/readline"
+	"github.com/pascallin/go-wolvesgame/internal/command"
+	"github.com/urfave/cli/v2"
 )
 
 var (
