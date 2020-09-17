@@ -1,44 +1,30 @@
 # go-wolvesgame
 echo said he is a good man
 
-## werewolf-cli
+## development
 
 ```shell script
-start  // enter game
+git clone https://github.com/pascallin/go-wolvesgame
+go mod download
+go run ./cmd/cli-wolvesgame/main.go
 ```
 
 ## cli interaction
 
-```
-app
-|- create
-    |- restart
-    |- [game command]
-|- join
-    |- [game command]
-|- [game command] 
-    |- say
-    |- [skills]
-|- exit
-|- help
-```
+please run help
 
 ## TODO list
-logical
-- players connection
-- room
-- game lifecycle
 
-cli
-- basic gui with interaction
-- cli command
-- room command
-- game command
+app logic
+- players connection
+
+game logic
+- game lifecycle
+- game round flow
+- role play
 
 network
-- socket
-- lan scan game
+- lan scan
 
 experience
 - game history show
-- audience mode
