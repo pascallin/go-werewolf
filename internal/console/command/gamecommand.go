@@ -5,7 +5,7 @@ import (
 
 	"github.com/pascallin/go-wolvesgame/internal/app"
 	"github.com/pascallin/go-wolvesgame/internal/game"
-	"github.com/pascallin/go-wolvesgame/pkg/transport/tcp"
+	"github.com/pascallin/go-wolvesgame/pkg/tcp"
 )
 
 var createFlags = []cli.Flag{

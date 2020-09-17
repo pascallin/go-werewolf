@@ -1,26 +1,10 @@
 package roles
 
-type idiot struct {
-	//白痴
-	name string
-	life int
+type Idiot struct {
+	Role
 }
 
-func (i *idiot) IsAlive() bool {
-	if i.life <= 0 {
-		return false
-	} else {
-		return true
-	}
-}
-func (i *idiot) IsGood() bool {
-	return false
-}
-func (i *idiot) Kill()  {
-	i.life --
-	return
-}
-func (i *idiot) Exile()  {
-	i.life --
-	return
+func NewIdiot() Role {
+	var role = New("白痴(Idiot)",  Good)
+	return role
 }

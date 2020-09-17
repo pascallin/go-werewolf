@@ -6,13 +6,13 @@ import (
 )
 
 type Player struct {
-	uid  uuid.UUID
-	name string
+	Uid  uuid.UUID
+	Name string
 	life int
-	role interface{}
+	Role roles.Role
 }
 
-func (player Player) IsAlive() bool {
+func (player *Player) IsAlive() bool {
 	if player.life <= 0 {
 		return false
 	} else {
@@ -20,24 +20,24 @@ func (player Player) IsAlive() bool {
 	}
 }
 
-func (player Player) Kill()  {
+func (player *Player) BeKilled()  {
 	player.life --
 	return
 }
 
-func (player Player) Exile() {
+func (player *Player) Exile() {
 	player.life--
 	return
 }
 
-func (player *Player) SetRole(r roles.RoleClass) {
-	player.role = r
+func (player *Player) SetRole(r roles.Role) {
+	player.Role = r
 }
 
 func NewPlayer(name string) Player {
 	var p Player
-	p.uid = uuid.NewV4()
-	p.name = name
+	p.Uid = uuid.NewV4()
+	p.Name = name
 	p.life = 1
 	return p
 }

@@ -1,26 +1,14 @@
 package roles
 
-type seer struct {
-	//预言家
-	name string
-	life int
+type Seer struct {
+	Role
 }
 
-func (s *seer) IsAlive() bool {
-	if s.life <= 0 {
-		return false
-	} else {
-		return true
-	}
+func (s *Seer) CheckPlayerSide(playerId string) string {
+	return "GOOD"
 }
-func (s *seer) IsGood() bool {
-	return false
-}
-func (s *seer) Kill()  {
-	s.life --
-	return
-}
-func (s *seer) Exile()  {
-	s.life --
-	return
+
+func NewSeer() Role {
+	var role = New("预言家(Seer)",  Good)
+	return role
 }

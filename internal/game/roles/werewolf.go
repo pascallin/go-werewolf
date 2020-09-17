@@ -1,10 +1,10 @@
 package roles
 
 type WereWolf struct {
-	RoleClass
+	Role
 }
 
-func NewWereWolf() RoleClass {
-	var role = New("狼人(WereWolf)",  "BAD")
+func NewWereWolf() Role {
+	var role = New("狼人(WereWolf)",  Bad)
 	return role
 }

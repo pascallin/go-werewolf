@@ -4,7 +4,7 @@ import (
 	"sync"
 
 	"github.com/pascallin/go-wolvesgame/internal/game"
-	"github.com/pascallin/go-wolvesgame/pkg/transport/tcp"
+	"github.com/pascallin/go-wolvesgame/pkg/tcp"
 )
 
 type App struct {

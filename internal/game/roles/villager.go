@@ -1,10 +1,10 @@
 package roles
 
 type Villager struct {
-	RoleClass
+	Role
 }
 
-func NewVillager() RoleClass {
-	var role = New("村民(Villager)",  "GOOD")
+func NewVillager() Role {
+	var role = New("村民(Villager)",  Good)
 	return role
 }

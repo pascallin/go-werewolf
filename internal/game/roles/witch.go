@@ -1,27 +1,20 @@
 package roles
 
-type witch struct {
-	//女巫
-	name string
-	life int
+import uuid "github.com/satori/go.uuid"
+
+type Witch struct {
+	Role
 }
 
+func (w *Witch) usePoison(playerID uuid.UUID) error {
+	return nil
+}
 
-func (w *witch) IsAlive() bool {
-	if w.life <= 0 {
-		return false
-	} else {
-		return true
-	}
+func (w *Witch) useAntidote(playerID uuid.UUID) error {
+	return nil
 }
-func (w *witch) IsGood() bool {
-	return false
-}
-func (w *witch) Kill()  {
-	w.life --
-	return
-}
-func (w *witch) Exile()  {
-	w.life --
-	return
+
+func NewWitch() Role {
+	var role = New("女巫(Witch)",  Good)
+	return role
 }
