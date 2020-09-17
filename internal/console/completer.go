@@ -1,8 +1,8 @@
-package command
+package console
 
 import "github.com/chzyer/readline"
 
-var Completer = readline.NewPrefixCompleter(
+var completer = readline.NewPrefixCompleter(
 	// Common command
 	readline.PcItem("help"),
 	readline.PcItem("exit"),
@@ -10,7 +10,6 @@ var Completer = readline.NewPrefixCompleter(
 	// Create
 	readline.PcItem("create"),
 	readline.PcItem("join"),
-	//readline.PcItem("scan"),
 
 	// Game command
 	readline.PcItem("say"),

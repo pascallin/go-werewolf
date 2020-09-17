@@ -1,4 +1,4 @@
-package role
+package roles
 
 type idiot struct {
 	//白痴

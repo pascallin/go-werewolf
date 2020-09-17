@@ -3,20 +3,20 @@ package game
 import (
 	"errors"
 	"fmt"
+	"github.com/pascallin/go-wolvesgame/internal/game/palyer"
 	"math/rand"
 	"strconv"
 
-	"github.com/pascallin/go-wolvesgame/internal/game/player"
-	"github.com/pascallin/go-wolvesgame/internal/game/role"
+	gameroles "github.com/pascallin/go-wolvesgame/internal/game/roles"
 )
 
 type Game struct {
-	status string           `json:"status"`
-	round int               `json:"round"`
-	playersCount int        `json:"playersCount"`
-	participants int        `json:"participants"`
-	players []player.Player `json:"players"`
-	roles []role.RoleClass  `json:"roles"`
+	status string               `json:"status"`
+	round int                   `json:"round"`
+	playersCount int            `json:"playersCount"`
+	participants int            `json:"participants"`
+	players []palyer.Player     `json:"players"`
+	roles []gameroles.RoleClass `json:"roles"`
 }
 
 func (g *Game) GameStart() error {
@@ -28,10 +28,10 @@ func (g *Game) GameStart() error {
 }
 
 func (g Game) PrintGameStatus() {
-	fmt.Printf("%+v", g)
+	fmt.Printf("%#v\n", g)
 }
 
-func (g *Game) JoinPlayer(player player.Player) {
+func (g *Game) JoinPlayer(player palyer.Player) {
 	g.participants += 1
 	g.players = append(g.players, player)
 }
@@ -58,29 +58,29 @@ func (g *Game) assignRoles() {
 }
 
 //for temporary
-func genPlayers(count int) []player.Player {
-	var players []player.Player
+func genPlayers(count int) []palyer.Player {
+	var players []palyer.Player
 	for i := 0; i < count; i++ {
-		players = append(players, player.NewPlayer(strconv.Itoa(i)))
+		players = append(players, palyer.NewPlayer(strconv.Itoa(i)))
 	}
 	return players
 }
 //for temporary
-func genRoles() []role.RoleClass {
-	var roles []role.RoleClass
+func genRoles() []gameroles.RoleClass {
+	var roles []gameroles.RoleClass
 	// villagers
 	for i := 0; i < 4; i++ {
-		roles = append(roles, role.NewVillager())
+		roles = append(roles, gameroles.NewVillager())
 	}
 	// wolves
 	for i := 0; i < 4; i++ {
-		roles = append(roles, role.NewWereWolf())
+		roles = append(roles, gameroles.NewWereWolf())
 	}
 	// gods
-	roles = append(roles, role.NewVillager())
-	roles = append(roles, role.NewVillager())
-	roles = append(roles, role.NewVillager())
-	roles = append(roles, role.NewVillager())
+	roles = append(roles, gameroles.NewVillager())
+	roles = append(roles, gameroles.NewVillager())
+	roles = append(roles, gameroles.NewVillager())
+	roles = append(roles, gameroles.NewVillager())
 
 	return roles
 }
@@ -91,7 +91,7 @@ func CreateGame() Game {
 		round: 0,
 		playersCount: 12,
 		participants: 0,
-		players: []player.Player{},
+		players: []palyer.Player{},
 		roles: genRoles(),
 	}
 

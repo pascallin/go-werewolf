@@ -1,4 +1,4 @@
-package role
+package roles
 
 type seer struct {
 	//预言家

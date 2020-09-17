@@ -1,7 +1,7 @@
-package player
+package palyer
 
 import (
-	"github.com/pascallin/go-wolvesgame/internal/game/role"
+	"github.com/pascallin/go-wolvesgame/internal/game/roles"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -30,7 +30,7 @@ func (player Player) Exile() {
 	return
 }
 
-func (player *Player) SetRole(r role.RoleClass) {
+func (player *Player) SetRole(r roles.RoleClass) {
 	player.role = r
 }
 

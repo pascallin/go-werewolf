@@ -4,40 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/pascallin/go-wolvesgame/internal/context"
-	"github.com/pascallin/go-wolvesgame/internal/transport/tcp"
+	"github.com/pascallin/go-wolvesgame/internal/app"
 	"github.com/urfave/cli/v2"
 )
-
-var statusCommand = &cli.Command{
-	Name:    "status",
-	Aliases: []string{"v"},
-	Usage:   "显示游戏状态",
-	Action: func(ctx *cli.Context) error {
-		context.GetContext().GetGame().PrintGameStatus()
-		return nil
-	},
-}
-
-var startCommand = &cli.Command{
-	Name:    "start",
-	Aliases: []string{"v"},
-	Usage:   "开始游戏",
-	Action: func(ctx *cli.Context) error {
-		// add game
-		game := context.GetContext().GetGame()
-		game.GameStart()
-
-		// run socket server
-		go tcp.NewServer()
-
-		// create socket client
-		c := context.GetContext()
-		c.SetTcpClient(tcp.NewClient())
-
-		return nil
-	},
-}
 
 var sayCommand = &cli.Command{
 	Name:    "say",
@@ -49,9 +18,9 @@ var sayCommand = &cli.Command{
 			return nil
 		}
 		msg := ctx.Args().Slice()
-		c := context.GetContext()
+		c := app.GetApp()
 		client := c.GetTcpClient()
-		go client.Send(strings.Join(msg, " "))
+		go client.Send("[" +c.GetUser().Nickname + " said]" + strings.Join(msg, " "))
 		return nil
 	},
 }
@@ -85,5 +54,16 @@ var killCommand = &cli.Command{
 		// TODO: kill vote someone
 		fmt.Println("你选择杀：", name)
 		return nil
+	},
+}
+
+var playerCommands = &cli.Command{
+	Name:    		"player",
+	Aliases:	 	[]string{"i"},
+	Usage:   		"玩家操作",
+	Subcommands: 	[]*cli.Command{
+		sayCommand,
+		voteCommand,
+		killCommand,
 	},
 }

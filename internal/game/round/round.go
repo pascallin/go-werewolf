@@ -1,12 +1,12 @@
 package round
 
 import (
-	"github.com/pascallin/go-wolvesgame/internal/game/role"
+	"github.com/pascallin/go-wolvesgame/internal/game/roles"
 )
 
 type Round struct {
 	number int
-	Roles []role.RoleClass // game exist roles
+	Roles []roles.RoleClass // game exist roles
 }
 
 func (r Round) RoundStart() {

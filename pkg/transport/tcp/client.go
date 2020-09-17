@@ -7,16 +7,16 @@ import (
 	"net"
 )
 
-type Client struct {
+type TCPClient struct {
 	conn    net.Conn
 	send    chan []byte
 	receive chan []byte
 }
 
-func NewClient() *Client {
+func NewClient() *TCPClient {
 	// connect to this socket
 	conn, _ := net.Dial("tcp", "127.0.0.1:8080")
-	client := &Client{
+	client := &TCPClient{
 		conn:    conn,
 		send:    make(chan []byte, 256),
 		receive: make(chan []byte, 256),
@@ -26,19 +26,19 @@ func NewClient() *Client {
 	return client
 }
 
-func (c *Client) listen() {
+func (c *TCPClient) listen() {
 	for {
 		message, _ := bufio.NewReader(c.conn).ReadBytes('\n')
 		c.receive <- message
 	}
 }
 
-func (c *Client) Send(msg string) {
+func (c *TCPClient) Send(msg string) {
 	// NOTE: need to add '\n' as line end
 	c.send <- []byte(msg + "\n")
 }
 
-func (c *Client) pump() {
+func (c *TCPClient) pump() {
 	defer func() {
 		c.conn.Close()
 	}()

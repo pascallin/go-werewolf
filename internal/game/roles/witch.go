@@ -1,4 +1,4 @@
-package role
+package roles
 
 type witch struct {
 	//女巫

@@ -2,7 +2,7 @@ package console
 
 import (
 	"github.com/chzyer/readline"
-	"github.com/pascallin/go-wolvesgame/internal/command"
+	"github.com/pascallin/go-wolvesgame/internal/app"
 )
 
 func filterInput(r rune) (rune, bool) {
@@ -15,10 +15,11 @@ func filterInput(r rune) (rune, bool) {
 }
 
 func getReadline() *readline.Instance {
+	user := app.GetApp().GetUser()
 	rl, _ := readline.NewEx(&readline.Config{
-		Prompt: "\033[31mWerwolf»\033[0m ",
+		Prompt: "\033[31mWerwolf("+ user.Nickname + ")»\033[0m ",
 		//HistoryFile:     "/tmp/readline.tmp",
-		AutoComplete:        command.Completer,
+		AutoComplete:        completer,
 		InterruptPrompt:     "^C",
 		EOFPrompt:           "exit",
 		HistorySearchFold:   true,

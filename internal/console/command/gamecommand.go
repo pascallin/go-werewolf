@@ -1,13 +1,11 @@
 package command
 
 import (
-	"fmt"
-	"os"
-
-	"github.com/pascallin/go-wolvesgame/internal/context"
-	"github.com/pascallin/go-wolvesgame/internal/game"
-	"github.com/pascallin/go-wolvesgame/internal/transport/tcp"
 	"github.com/urfave/cli/v2"
+
+	"github.com/pascallin/go-wolvesgame/internal/app"
+	"github.com/pascallin/go-wolvesgame/internal/game"
+	"github.com/pascallin/go-wolvesgame/pkg/transport/tcp"
 )
 
 var createFlags = []cli.Flag{
@@ -20,7 +18,7 @@ var createFlags = []cli.Flag{
 	&cli.IntFlag{
 		Name:     "people",
 		Aliases:  []string{"p"},
-		Value:    9,
+		Value:    12,
 		Usage:    "参与人数",
 		Required: false,
 	},
@@ -38,7 +36,7 @@ var createCommand = &cli.Command{
 	Usage:   "创建游戏",
 	Flags:   createFlags,
 	Action: func(ctx *cli.Context) error {
-		c := context.GetContext()
+		c := app.GetApp()
 		game := game.CreateGame()
 		c.SetGame(game)
 		c.SetTcpServer(tcp.NewServer())
@@ -53,38 +51,48 @@ var joinCommand = &cli.Command{
 	Usage:   "加入游戏",
 	Action: func(ctx *cli.Context) error {
 		// TODO: 判断是否在游戏中
-		c := context.GetContext()
+		c := app.GetApp()
 		c.SetTcpClient(tcp.NewClient())
 		return nil
 	},
 }
 
-var exitCommand = &cli.Command{
-	Name:  "exit",
-	Usage: "退出",
+var statusCommand = &cli.Command{
+	Name:    "status",
+	Usage:   "显示游戏状态",
 	Action: func(ctx *cli.Context) error {
-		fmt.Println("退出游戏")
-		os.Exit(0)
+		app.GetApp().GetGame().PrintGameStatus()
 		return nil
 	},
 }
 
-var helpCommand = &cli.Command{
-	Name:      "help",
-	Aliases:   []string{"h"},
-	Usage:     "展示帮助信息",
-	ArgsUsage: "[command]",
-	Action: func(c *cli.Context) error {
-		args := c.Args()
-		if args.Present() {
-			err := cli.ShowCommandHelp(c, args.First())
-			if err != nil {
-				fmt.Println(err)
-			}
-			return nil
-		}
+var startCommand = &cli.Command{
+	Name:    "start",
+	Usage:   "开始游戏",
+	Action: func(ctx *cli.Context) error {
+		// add game
+		game := app.GetApp().GetGame()
+		game.GameStart()
 
-		_ = cli.ShowAppHelp(c)
+		// run socket server
+		go tcp.NewServer()
+
+		// create socket client
+		c := app.GetApp()
+		c.SetTcpClient(tcp.NewClient())
+
 		return nil
+	},
+}
+
+var gameCommands = &cli.Command{
+	Name:    		"game",
+	Aliases:	 	[]string{"g"},
+	Usage:   		"游戏操作",
+	Subcommands: 	[]*cli.Command{
+		statusCommand,
+		startCommand,
+		createCommand,
+		joinCommand,
 	},
 }

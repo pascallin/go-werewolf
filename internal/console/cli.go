@@ -3,27 +3,26 @@ package console
 import (
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"strings"
 
 	"github.com/chzyer/readline"
-	"github.com/pascallin/go-wolvesgame/internal/command"
 	"github.com/urfave/cli/v2"
+
+	"github.com/pascallin/go-wolvesgame/internal/app"
+	"github.com/pascallin/go-wolvesgame/internal/console/command"
 )
 
-var (
-	console cli.App
-)
-
-func terminal() error {
+func createTerminal() error {
 	cli.AppHelpTemplate = `{{if .Commands}}{{range .Commands}}{{if not .HideHelp}}{{join .Names ", "}}{{ "\t"}}{{.Usage}}{{ "\n" }}{{end}}{{end}}{{end}}`
-	console := cli.NewApp()
-	console.Name = "wolvesgame"
-	console.Commands = command.Commands
-	console.Usage = "狼人杀命令行版"
-	console.HelpName = "wolvesgame"
-	console.Version = "0.0.1"
-	console.Action = func(c *cli.Context) error {
+	terminal := cli.NewApp()
+	terminal.Name = "wolves-game"
+	terminal.Commands = command.GetCommands()
+	terminal.Usage = "狼人杀命令行版"
+	terminal.HelpName = "wolves-game"
+	terminal.Version = "0.0.1"
+	terminal.Action = func(c *cli.Context) error {
 		fmt.Println("Command not found. Type 'help' for a list of command.")
 		return nil
 	}
@@ -38,10 +37,10 @@ func terminal() error {
 				continue
 			}
 		} else if err == io.EOF {
-			console.Run([]string{"app", "exit"})
+			terminal.Run([]string{"app", "exit"})
 		}
 		line = strings.TrimSpace(line)
-		err = console.Run(strings.Fields("cmd " + line))
+		err = terminal.Run(strings.Fields("cmd " + line))
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -49,15 +48,29 @@ func terminal() error {
 	return nil
 }
 
-func Console() {
-	app := cli.NewApp()
-	app.Usage = "狼人杀命令行版"
-	app.Version = "0.0.1"
-	app.HelpName = "wolvesgame"
-	app.Name = "wolvesgame"
-	app.Action = func(c *cli.Context) error {
-		err := terminal()
+func Start() {
+	console := cli.NewApp()
+	console.Usage = "狼人杀命令行版"
+	console.Version = "0.0.1"
+	console.HelpName = "wolves-game"
+	console.Name = "wolves-game"
+
+	console.Flags = []cli.Flag {
+		&cli.StringFlag{
+			Name: "username, u",
+			Usage: "player nickname",
+			Required: true,
+		},
+	}
+
+	console.Action = func(c *cli.Context) error {
+		app.GetApp().SetUser(app.NewUser(c.String("username")))
+		err := createTerminal()
 		return err
 	}
-	app.Run(os.Args)
+
+	err := console.Run(os.Args)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

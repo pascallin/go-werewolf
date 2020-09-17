@@ -1,4 +1,4 @@
-package role
+package roles
 
 type WereWolf struct {
 	RoleClass

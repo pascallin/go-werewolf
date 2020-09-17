@@ -1,4 +1,4 @@
-package role
+package roles
 
 type moderator struct {
 	//法官
