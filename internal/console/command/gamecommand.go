@@ -37,7 +37,7 @@ var createCommand = &cli.Command{
 	Flags:   createFlags,
 	Action: func(ctx *cli.Context) error {
 		c := app.GetApp()
-		game := game.NewGame()
+		game := game.New()
 		c.SetGame(game)
 		c.SetTcpServer(tcp.NewServer())
 		c.SetTcpClient(tcp.NewClient())

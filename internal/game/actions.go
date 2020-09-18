@@ -7,13 +7,11 @@ import (
 
 func RoundStart(number int, game Game) {
 	fmt.Println("============ round ============", number)
-
 	// night fall
 	fmt.Println("night fall")
 	NightFall(game)
-	// night actions
-
 	// day
+	Sunrise(game)
 	fmt.Println("sunrise")
 }
 
@@ -26,11 +24,11 @@ func StartGame(game Game) error {
 	var i = 1
 	for {
 		RoundStart(i, game)
-		gameover := game.CheckGameOver()
-		if gameover {
-			OverGame()
+		//gameover := game.CheckGameOver()
+		//if gameover {
+		//	OverGame()
 			break
-		}
+		//}
 		i++
 		continue
 	}

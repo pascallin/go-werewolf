@@ -5,19 +5,25 @@ import (
 )
 
 func NightFall(game Game) {
-	// kill goodman
-	players := game.GetGoodPlayersLeft()
-	fmt.Println("Kill =================> ", players[0])
-	players[0].BeKilled()
-	// god skills
-	for _, p := range game.GetPlayersLeft() {
-		if p.Role.Name == "预言家(Seer)" &&p.IsAlive() {
-			fmt.Println("=============== Seer =================", p)
-		}
-		if p.Role.Name == "女巫(Witch)" &&p.IsAlive() {
-			fmt.Println("=============== Witch =================", p)
-		}
-	}
+	goodman := game.GetGoodPlayersLeft()
+	fmt.Println(goodman)
+
+	// werewolf action
+	// TODO: random kill
+	badguy := game.GetWerewolfPlayersLeft()
+	fmt.Println(badguy)
+
+	//var actionWerewolf = badguy[0]
+	//var theFirstGoodMan = goodman[0]
+
+	//actionWerewolf.KillPlayer(theFirstGoodMan)
+
+	//for _, p := range game.GetGoodPlayersLeft() {
+	//	// seer skills
+	//	if p.Type == roleplayer.Seer &&p.IsAlive() {
+	//
+	//	}
+	//}
 }
 
 func Sunrise(game Game) {

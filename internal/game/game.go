@@ -1,29 +1,31 @@
 package game
 
 import (
-	"errors"
 	"fmt"
-	"math/rand"
-
-	gameroles "github.com/pascallin/go-wolvesgame/internal/game/roles"
+	"github.com/pascallin/go-wolvesgame/internal/game/roleplayer"
 )
 
 type Game struct {
-	Status       Status           `json:"status"`
-	PlayersCount int              `json:"playersCount"`
-	Participants int              `json:"participants"`
-	Players      []Player         `json:"players"`
-	Roles        []gameroles.Role `json:"roles"`
+	Status       Status			`json:"status"`
+	PlayersCount int			`json:"playersCount"` // game player neeed
+	Participants int			`json:"participants"`
+	Players      []Player		`json:"players"`
+	RolePlayers	 []interface{}	`json:"rolePlayers"`
 }
 
+var (
+	Roles12 = []roleplayer.Type{
+		roleplayer.Villager, roleplayer.Villager, roleplayer.Villager, roleplayer.Villager,
+		roleplayer.Werewolf, roleplayer.Werewolf, roleplayer.Werewolf , roleplayer.Werewolf,
+		roleplayer.Seer, roleplayer.Witch, roleplayer.Idiot, roleplayer.Hunter,
+	}
+)
 
-func NewGame() Game {
+func New() Game {
 	game := Game{
 		Status:       Ready,
 		PlayersCount: 12,
 		Participants: 0,
-		Players:      []Player{},
-		Roles:        gen12Roles(),
 	}
 
 	return game
@@ -39,60 +41,21 @@ func (g *Game) JoinPlayer(player Player) {
 	g.Players = append(g.Players, player)
 }
 
-func genRandomList(length int) ([]int, error) {
-	if length <= 0 {
-		return nil, errors.New("the size of the parameter length illegal")
-	}
-	var list []int
-	for i := 0; i < length; i++ {
-		list = append(list, i)
-	}
-	for i := len(list) - 1; i > 0; i-- {
-		num := rand.Intn(i + 1)
-		list[i], list[num] = list[num], list[i]
-	}
-	return list, nil
-}
-
 func (g *Game) AssignRoles() {
+	var rolePlayers []interface{}
 	randomList, _ := genRandomList(g.Participants)
 	for i, _ := range g.Players {
-		g.Players[i].SetRole(g.Roles[randomList[i]])
+		player := roleplayer.New(g.Players[i].ID, g.Players[i].Name)
+		rolePlayers = append(rolePlayers, roleplayer.NewRolePlayer(player, Roles12[randomList[i]]))
 	}
+	g.RolePlayers = rolePlayers
 }
 
-func (g *Game) CheckGameOver() bool {
-	var goodman uint64
-	var badguy uint64
-	for _, player := range g.GetPlayersLeft() {
-		if player.Role.Side == gameroles.Good && player.IsAlive() {
-			goodman++
-		}
-	}
-	for _, player := range g.GetPlayersLeft() {
-		if player.Role.Side == gameroles.Bad && player.IsAlive() {
-			badguy++
-		}
-	}
-	return badguy >= goodman
-}
-
-func (g *Game) GetPlayersLeft() []*Player {
-	var playersLeft []*Player
-	for i, player := range g.Players {
-		if player.IsAlive() {
-			playersLeft = append(playersLeft, &g.Players[i])
-		}
-	}
-	return playersLeft
-}
-
-func (g *Game) GetGoodPlayersLeft() []*Player {
-	var playersLeft []*Player
-	for i, player := range g.Players {
-		if player.IsAlive() && player.Role.IsGood() {
-			playersLeft = append(playersLeft, &g.Players[i])
-		}
-	}
-	return playersLeft
-}
+//func (g *Game) CheckGameOver() bool {
+//	goodman := len(g.GetGoodPlayersLeft())
+//	badguy := len(g.GetWerewolfPlayersLeft())
+//	if badguy == 0 {
+//		return true
+//	}
+//	return badguy >= goodman
+//}
