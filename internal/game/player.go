@@ -1,4 +1,4 @@
-package palyer
+package game
 
 import (
 	"github.com/pascallin/go-wolvesgame/internal/game/roles"

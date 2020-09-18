@@ -3,26 +3,23 @@ package game
 import (
 	"strconv"
 	"testing"
-
-	"github.com/pascallin/go-wolvesgame/internal/game/palyer"
 )
 
-//for temporary
-func genPlayers(count int) []palyer.Player {
-	var players []palyer.Player
+func genPlayers(count int) []Player {
+	var players []Player
 	for i := 0; i < count; i++ {
-		players = append(players, palyer.NewPlayer("player"+strconv.Itoa(i)))
+		players = append(players, NewPlayer("player"+strconv.Itoa(i)))
 	}
 	return players
 }
 
 func TestGameFlow(t *testing.T) {
-	game := CreateGame()
+	game := NewGame()
 
-	players := genPlayers(game.playersCount)
+	players := genPlayers(game.PlayersCount)
 	for _, p := range players {
 		game.JoinPlayer(p)
 	}
 
-	game.GameStart()
+	StartGame(game)
 }

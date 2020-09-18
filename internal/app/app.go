@@ -1,9 +1,9 @@
 package app
 
 import (
+	"github.com/pascallin/go-wolvesgame/internal/game"
 	"sync"
 
-	"github.com/pascallin/go-wolvesgame/internal/game"
 	"github.com/pascallin/go-wolvesgame/pkg/tcp"
 )
 

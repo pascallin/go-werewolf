@@ -5,49 +5,38 @@ import (
 	"fmt"
 	"math/rand"
 
-	"github.com/pascallin/go-wolvesgame/internal/game/gameround"
-	"github.com/pascallin/go-wolvesgame/internal/game/palyer"
 	gameroles "github.com/pascallin/go-wolvesgame/internal/game/roles"
 )
 
 type Game struct {
-	status Status               	`json:"status"`
-	roundNumber uint64          	`json:"roundNumber"`
-	playersCount int            	`json:"playersCount"`
-	participants int            	`json:"participants"`
-	players []palyer.Player     	`json:"players"`
-	roles []gameroles.Role 			`json:"roles"`
-	round gameround.Round			`json:"round"`
+	Status       Status           `json:"status"`
+	PlayersCount int              `json:"playersCount"`
+	Participants int              `json:"participants"`
+	Players      []Player         `json:"players"`
+	Roles        []gameroles.Role `json:"roles"`
 }
 
-func (g *Game) GameStart() error {
-	if g.playersCount != g.participants {
-		return errors.New("no enough players")
-	}
-	g.assignRoles()
 
-	g.round = gameround.New(g.roles)
-	var i = 1
-	for {
-		g.round.RoundStart(i, g.getPlayersLeft())
-		gameover := g.checkGameOver()
-		if gameover {
-			GameOver()
-			break
-		}
-		i++
-		continue
+func NewGame() Game {
+	game := Game{
+		Status:       Ready,
+		PlayersCount: 12,
+		Participants: 0,
+		Players:      []Player{},
+		Roles:        gen12Roles(),
 	}
-	return nil
+
+	return game
 }
 
-func (g Game) PrintGameStatus() {
+
+func (g *Game) PrintGameStatus() {
 	fmt.Printf("%#v\n", g)
 }
 
-func (g *Game) JoinPlayer(player palyer.Player) {
-	g.participants += 1
-	g.players = append(g.players, player)
+func (g *Game) JoinPlayer(player Player) {
+	g.Participants += 1
+	g.Players = append(g.Players, player)
 }
 
 func genRandomList(length int) ([]int, error) {
@@ -65,22 +54,22 @@ func genRandomList(length int) ([]int, error) {
 	return list, nil
 }
 
-func (g *Game) assignRoles() {
-	randomList, _ := genRandomList(g.participants)
-	for i, _ := range g.players {
-		g.players[i].SetRole(g.roles[randomList[i]])
+func (g *Game) AssignRoles() {
+	randomList, _ := genRandomList(g.Participants)
+	for i, _ := range g.Players {
+		g.Players[i].SetRole(g.Roles[randomList[i]])
 	}
 }
 
-func (g *Game) checkGameOver() bool {
+func (g *Game) CheckGameOver() bool {
 	var goodman uint64
 	var badguy uint64
-	for _, player := range g.getPlayersLeft() {
+	for _, player := range g.GetPlayersLeft() {
 		if player.Role.Side == gameroles.Good && player.IsAlive() {
 			goodman++
 		}
 	}
-	for _, player := range g.getPlayersLeft() {
+	for _, player := range g.GetPlayersLeft() {
 		if player.Role.Side == gameroles.Bad && player.IsAlive() {
 			badguy++
 		}
@@ -88,31 +77,22 @@ func (g *Game) checkGameOver() bool {
 	return badguy >= goodman
 }
 
-func (g *Game) getPlayersLeft() []palyer.Player {
-	var playersLeft []palyer.Player
-	for _, player := range g.players {
+func (g *Game) GetPlayersLeft() []*Player {
+	var playersLeft []*Player
+	for i, player := range g.Players {
 		if player.IsAlive() {
-			playersLeft = append(playersLeft, player)
+			playersLeft = append(playersLeft, &g.Players[i])
 		}
 	}
 	return playersLeft
 }
 
-func CreateGame() Game {
-	game := Game{
-		status: Ready,
-		roundNumber: 0,
-		playersCount: 12,
-		participants: 0,
-		players: []palyer.Player{},
-		roles: gen12Roles(),
+func (g *Game) GetGoodPlayersLeft() []*Player {
+	var playersLeft []*Player
+	for i, player := range g.Players {
+		if player.IsAlive() && player.Role.IsGood() {
+			playersLeft = append(playersLeft, &g.Players[i])
+		}
 	}
-
-	return game
+	return playersLeft
 }
-
-
-func GameOver() {
-	fmt.Println("============= game over =============")
-}
-

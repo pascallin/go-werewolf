@@ -37,7 +37,7 @@ var createCommand = &cli.Command{
 	Flags:   createFlags,
 	Action: func(ctx *cli.Context) error {
 		c := app.GetApp()
-		game := game.CreateGame()
+		game := game.NewGame()
 		c.SetGame(game)
 		c.SetTcpServer(tcp.NewServer())
 		c.SetTcpClient(tcp.NewClient())
@@ -71,8 +71,8 @@ var startCommand = &cli.Command{
 	Usage:   "开始游戏",
 	Action: func(ctx *cli.Context) error {
 		// add game
-		game := app.GetApp().GetGame()
-		game.GameStart()
+		g := app.GetApp().GetGame()
+		game.StartGame(*g)
 
 		// run socket server
 		go tcp.NewServer()
