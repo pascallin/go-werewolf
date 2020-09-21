@@ -31,6 +31,7 @@ type Player struct {
 	life 		int			`json:"life"`
 	Poison  	bool		`json:"poison"`
 	AntiDote 	bool		`json:"antidote"`
+	RoundVoted	int			`json:"-"`
 }
 
 func (player *Player) IsWerewolf() bool {
@@ -72,6 +73,10 @@ func (player *Player) InitRole(t RoleType) {
 		player.Poison = false
 		player.AntiDote = false
 	}
+}
+
+func (p *Player) clearRoundVoted() {
+	p.RoundVoted = 0
 }
 
 func NewPlayer(id int, name string) Player {

@@ -29,6 +29,11 @@ func randomPoison(game *Game) *Player {
 	return man[0]
 }
 
+func randomVote(game *Game) *Player {
+	man := GetManLeft(game)
+	return man[0]
+}
+
 func TestGameFlow(t *testing.T) {
 	game := New()
 
@@ -39,10 +44,11 @@ func TestGameFlow(t *testing.T) {
 
 	go StartGame(&game)
 
+	// NOTE: fake player user actions
 	for {
 		select {
 		case s := <-game.Lifecycle:
-			if s == WaitingPlayerAction {
+			if s == WaitingNightPlayerAction {
 				game.PlayerActions.WerewolfKill <- randomKill(&game)
 				game.PlayerActions.SeerCheck <- randomCheck(&game)
 				if game.RoundNumber == 1 {
@@ -54,6 +60,11 @@ func TestGameFlow(t *testing.T) {
 					game.PlayerActions.UseAntidote <- true
 				} else {
 					game.PlayerActions.UseAntidote <- false
+				}
+			}
+			if s == WaitingDayPlayerAction {
+				for range GetManLeft(&game) {
+					game.PlayerActions.TalkedCount <- 1
 				}
 			}
 			if s == Over {

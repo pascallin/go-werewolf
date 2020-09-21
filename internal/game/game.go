@@ -8,13 +8,14 @@ import (
 
 type Status int
 const (
-	Waiting Status = iota	// wait for start
-	Ready					// game started or restart
-	WaitingPlayerAction
-	Over					// game over
+	Waiting Status = iota		// wait for start
+	Ready						// game started or restart
+	WaitingNightPlayerAction
+	WaitingDayPlayerAction
+	Over						// game over
 )
 func (d Status) String() string {
-	return [...]string{"Waiting", "Ready", "WaitingPlayerAction", "Over"}[d]
+	return [...]string{"Waiting", "Ready", "WaitingNightPlayerAction", "WaitingDayPlayerAction","Over"}[d]
 }
 
 type Game struct {
