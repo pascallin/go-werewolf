@@ -1,25 +1,32 @@
 package game
 
 import (
-	"fmt"
-	"github.com/pascallin/go-wolvesgame/internal/game/player"
-	uuid "github.com/satori/go.uuid"
 	"os"
-	"os/signal"
 	"strconv"
 	"testing"
 )
 
-func genPlayers(count int) []player.Player {
-	var players []player.Player
+func genPlayers(count int) []Player {
+	var players []Player
 	for i := 0; i < count; i++ {
-		players = append(players, player.NewPlayer(uuid.NewV4(), "player"+strconv.Itoa(i)))
+		players = append(players, NewPlayer(i, "player"+strconv.Itoa(i)))
 	}
 	return players
 }
 
-func randomKill() {
+func randomKill(game *Game) *Player {
+	goodMan := GetGoodManLeft(game)
+	return goodMan[0]
+}
 
+func randomCheck(game *Game) *Player {
+	man := GetManLeft(game)
+	return man[0]
+}
+
+func randomPoison(game *Game) *Player {
+	man := GetManLeft(game)
+	return man[0]
 }
 
 func TestGameFlow(t *testing.T) {
@@ -30,19 +37,28 @@ func TestGameFlow(t *testing.T) {
 		game.JoinPlayer(p)
 	}
 
-	StartGame(game)
+	go StartGame(&game)
 
-	// wait game player actions
-	signalListen()
-}
-
-func signalListen() {
-	c := make(chan os.Signal)
-	signal.Notify(c)
 	for {
-		s := <-c
-		//收到信号后的处理，这里只是输出信号内容，可以做一些更有意思的事
-		fmt.Println("get signal:", s)
-		os.Exit(1)
+		select {
+		case s := <-game.Lifecycle:
+			if s == WaitingPlayerAction {
+				game.PlayerActions.WerewolfKill <- randomKill(&game)
+				game.PlayerActions.SeerCheck <- randomCheck(&game)
+				if game.RoundNumber == 1 {
+					game.PlayerActions.UsePoison <- randomPoison(&game)
+				} else {
+					game.PlayerActions.UsePoison <- nil
+				}
+				if game.RoundNumber == 2 {
+					game.PlayerActions.UseAntidote <- true
+				} else {
+					game.PlayerActions.UseAntidote <- false
+				}
+			}
+			if s == Over {
+				os.Exit(0)
+			}
+		}
 	}
 }

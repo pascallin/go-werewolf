@@ -1,50 +1,26 @@
 package game
 
-import "fmt"
-
-type WaitPlayerActions int
-const (
-	WerewolfAction WaitPlayerActions = iota
-	WitchAction
-	SeerAction
-	Voting
+import (
+	"fmt"
 )
-func (d WaitPlayerActions) String() string {
-	return [...]string{"WerewolfAction", "WitchAction", "SeerAction", "Voting"}[d]
-}
 
-func RoundStart(number int, game Game) {
+func RoundStart(number int, game *Game) {
+	game.Lifecycle <- WaitingPlayerAction
 	fmt.Println("============ round ============", number)
-	// night fall
-	fmt.Println("night fall")
-	NightFall(game)
-	// day
-	Sunrise(game)
-	fmt.Println("sunrise")
-}
+	killed := <- game.PlayerActions.WerewolfKill
+	fmt.Println("============ WerewolfAction kill ============", killed)
+	killed.BeKilled()
 
-func NightFall(game Game) {
-	game.BlockGame()
-	ch := make(chan WaitPlayerActions)
-	var result int
-	// wait werewolf action
-	go func() {
-		println("come into WerewolfAction")
-		ch <- WerewolfAction
-	}()
-	<- ch
-	// wait seer action
-	go func() {
-		println("come into SeerAction")
-		ch <- SeerAction
-	}()
-	<- ch
-	close(ch)
-	println("result is:", result)
-}
-
-func Sunrise(game Game) {
-	// show dead man
-	// random pick speaker
-	// vote
+	saw := <- game.PlayerActions.SeerCheck
+	fmt.Println("============ Seer check ============", saw.IsWerewolf())
+	poison := <- game.PlayerActions.UsePoison
+	if poison != nil {
+		fmt.Println("============ UsePoison kill ============", poison)
+		poison.BeKilled()
+	}
+	antidote := <- game.PlayerActions.UseAntidote
+	if antidote {
+		fmt.Println("============ UseAntidote save ============")
+		killed.BeSaved()
+	}
 }
