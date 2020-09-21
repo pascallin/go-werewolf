@@ -1,6 +1,7 @@
 package game
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 )
@@ -12,18 +13,18 @@ const (
 	WaitingPlayerAction
 	Over					// game over
 )
-
 func (d Status) String() string {
 	return [...]string{"Waiting", "Ready", "WaitingPlayerAction", "Over"}[d]
 }
 
 type Game struct {
-	PlayersCount  int              	`json:"playersCount"` // game player needed
-	Participants  int              	`json:"participants"`
-	PlayerActions PlayerActions
-	Players       []Player
-	Lifecycle     chan Status
-	RoundNumber   int
+	PlayersCount  	int 			`json:"playersCount"` // game player needed
+	Participants  	int				`json:"participants"`
+	PlayerActions 	PlayerActions	`json:"-"`
+	Players       	[]Player		`json:"players"`
+	Lifecycle     	chan Status		`json:"-"`
+	RoundNumber   	int				`json:"roundNumber"`
+	ErrorCatch		chan error		`json:"-"`
 }
 
 var (
@@ -47,7 +48,11 @@ func New() Game {
 }
 
 func (g *Game) PrintGameStatus() {
-	fmt.Printf("%#v\n", g)
+	byteArray, err := json.MarshalIndent(g, "", "  ")
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(string(byteArray))
 }
 
 func (g *Game) JoinPlayer(player Player) {

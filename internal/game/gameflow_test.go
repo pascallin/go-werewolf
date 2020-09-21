@@ -57,6 +57,7 @@ func TestGameFlow(t *testing.T) {
 				}
 			}
 			if s == Over {
+				game.PrintGameStatus()
 				os.Exit(0)
 			}
 		}

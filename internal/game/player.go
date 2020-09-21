@@ -23,14 +23,14 @@ const (
 )
 
 type Player struct {
-	ID			int
-	Name 		string
-	Type  		RoleType
-	Alias 		string
-	Side  		Side
-	life 		int
-	Poison  	bool
-	AntiDote 	bool
+	ID			int			`json:"id"`
+	Name 		string		`json:"name"`
+	Type  		RoleType	`json:"type"`
+	Alias 		string		`json:"alias"`
+	Side  		Side		`json:"side"`
+	life 		int			`json:"life"`
+	Poison  	bool		`json:"poison"`
+	AntiDote 	bool		`json:"antidote"`
 }
 
 func (player *Player) IsWerewolf() bool {
