@@ -19,3 +19,20 @@ func GetManLeft(game *Game) []*Player {
 	}
 	return ps
 }
+
+func GetMostRoundVotingPlayer(game *Game) *Player {
+	var p *Player
+	for i, player := range game.Players {
+		if player.IsAlive() {
+			if p == nil {
+				p = &game.Players[i]
+				continue
+			}
+			if p.RoundVoted < game.Players[i].RoundVoted {
+				p = &game.Players[i]
+				continue
+			}
+		}
+	}
+	return p
+}

@@ -31,6 +31,10 @@ func RoundStart(number int, game *Game) {
 	// NOTE: day actions
 	game.Lifecycle <- WaitingDayPlayerAction
 	listenTalking(game)
+	listenTVoting(game)
+	p := GetMostRoundVotingPlayer(game)
+	fmt.Println("exile player ==========", p)
+	p.Exile()
 }
 
 func listenTalking(game *Game) {
@@ -48,4 +52,22 @@ func listenTalking(game *Game) {
 		}
 	}
 	fmt.Println("Talking End ============")
+}
+
+func listenTVoting(game *Game) {
+	voting := GetManLeft(game)
+	var voted = 0
+	var voteEnd = false
+	fmt.Println("Voting ============", len(voting))
+	for !voteEnd {
+		select {
+		case player := <-game.PlayerActions.Voting:
+			voted++
+			player.RoundVoted++
+			if voted == len(voting) {
+				voteEnd = true
+			}
+		}
+	}
+	fmt.Println("Voting End ============")
 }

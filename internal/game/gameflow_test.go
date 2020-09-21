@@ -66,6 +66,9 @@ func TestGameFlow(t *testing.T) {
 				for range GetManLeft(&game) {
 					game.PlayerActions.TalkedCount <- 1
 				}
+				for range GetManLeft(&game) {
+					game.PlayerActions.Voting <- randomVote(&game)
+				}
 			}
 			if s == Over {
 				game.PrintGameStatus()

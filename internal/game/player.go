@@ -37,41 +37,41 @@ type Player struct {
 func (player *Player) IsWerewolf() bool {
 	return player.Side == Bad
 }
-func (player *Player) IsAlive() bool {
-	if player.life <= 0 {
+func (p *Player) IsAlive() bool {
+	if p.life <= 0 {
 		return false
 	} else {
 		return true
 	}
 }
-func (player *Player) BeKilled()  {
-	player.life--
+func (p *Player) BeKilled()  {
+	p.life--
 	return
 }
 
-func (player *Player) BeSaved()  {
-	player.life++
+func (p *Player) BeSaved()  {
+	p.life++
 	return
 }
 
-func (player *Player) Exile() {
-	player.life--
+func (p *Player) Exile() {
+	p.life--
 	return
 }
-func (player *Player) InitRole(t RoleType) {
-	player.Type = t
-	player.life = 1
+func (p *Player) InitRole(t RoleType) {
+	p.Type = t
+	p.life = 1
 	if t == Werewolf {
-		player.Side = Bad
+		p.Side = Bad
 	} else {
-		player.Side = Good
+		p.Side = Good
 	}
 	if t == Witch {
-		player.Poison = true
-		player.AntiDote = true
+		p.Poison = true
+		p.AntiDote = true
 	} else {
-		player.Poison = false
-		player.AntiDote = false
+		p.Poison = false
+		p.AntiDote = false
 	}
 }
 
