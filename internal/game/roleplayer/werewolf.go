@@ -4,8 +4,8 @@ type WerewolfPlayer struct {
 	RolePlayer
 }
 
-func (w WerewolfPlayer) KillPlayer(p interface{}) {
-	p.(RolePlayer).BeKilled()
+func (w WerewolfPlayer) KillPlayer(p IRolePlayer) {
+	p.BeKilled()
 }
 
 func NewWerewolfPlayer(p RolePlayer) WerewolfPlayer {

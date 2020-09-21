@@ -13,6 +13,13 @@ go run ./cmd/cli-wolvesgame/main.go
 
 please run help
 
+## test
+
+```shell script
+// game test
+go test ./internal/game -v
+```
+
 ## TODO list
 
 app logic

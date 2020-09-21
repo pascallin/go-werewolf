@@ -1,4 +1,4 @@
-package console
+package cli
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 	"github.com/urfave/cli/v2"
 
 	"github.com/pascallin/go-wolvesgame/internal/app"
-	"github.com/pascallin/go-wolvesgame/internal/console/command"
+	"github.com/pascallin/go-wolvesgame/internal/cli/command"
 )
 
 func createTerminal() error {

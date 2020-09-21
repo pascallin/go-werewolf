@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/pascallin/go-wolvesgame/internal/console"
+	"github.com/pascallin/go-wolvesgame/internal/cli"
 )
 
 func main() {
-	console.Start()
+	cli.Start()
 }

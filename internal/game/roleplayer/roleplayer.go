@@ -1,7 +1,7 @@
 package roleplayer
 
 import (
-	uuid "github.com/satori/go.uuid"
+	"github.com/pascallin/go-wolvesgame/internal/game/player"
 )
 
 type Side int
@@ -26,9 +26,16 @@ const (
 	Villager
 )
 
+type IRolePlayer interface {
+	IsWerewolf() bool
+	IsAlive() bool
+	BeKilled()
+	Exile()
+	SetRole()
+}
+
 type RolePlayer struct {
-	id  uuid.UUID
-	Name string
+	Player *player.Player
 	Type  Type
 	Alias string
 	Side  Side
@@ -66,12 +73,11 @@ func (player *RolePlayer) SetRole(t Type) {
 	}
 }
 
-func New(id uuid.UUID, name string) RolePlayer {
-	var p RolePlayer
-	p.id = id
-	p.Name = name
-	p.life = 1
-	return p
+func New(p *player.Player) RolePlayer {
+	var rp RolePlayer
+	rp.Player = p
+	rp.life = 1
+	return rp
 }
 
 func NewRolePlayer(p RolePlayer, t Type) interface{} {

@@ -4,10 +4,10 @@ type SeerPlayer struct {
 	RolePlayer
 }
 
-func (s SeerPlayer) CheckPlayer(p *RolePlayer) Side {
-	return p.Side
+func (s SeerPlayer) CheckWerewolf(p IRolePlayer) bool {
+	return p.IsWerewolf()
 }
 
 type ISeer interface {
-	CheckPlayer() Side
+	CheckWerewolf() Side
 }

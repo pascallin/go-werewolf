@@ -1,4 +1,4 @@
-package game
+package player
 
 import uuid "github.com/satori/go.uuid"
 
