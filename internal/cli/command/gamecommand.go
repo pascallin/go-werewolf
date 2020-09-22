@@ -72,7 +72,7 @@ var startCommand = &cli.Command{
 	Action: func(ctx *cli.Context) error {
 		// add game
 		g := app.GetApp().GetGame()
-		game.StartGame(*g)
+		game.StartGame(g)
 
 		// run socket server
 		go tcp.NewServer()

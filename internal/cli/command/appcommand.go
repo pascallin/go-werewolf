@@ -31,7 +31,6 @@ var helpCommand = &cli.Command{
 			}
 			return nil
 		}
-
 		cli.ShowAppHelp(c)
 		return nil
 	},
