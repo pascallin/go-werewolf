@@ -1,8 +1,12 @@
 package terminalview
 
-import "github.com/rivo/tview"
+import (
+	"github.com/rivo/tview"
+)
 
-func GetTerminalView() *tview.Application {
+func GetTerminalView() (*tview.Application, *tview.TextView){
 	app := tview.NewApplication()
-	return app.SetRoot(NewFlexLayout(app), true).EnableMouse(true)
+
+	flexPanel, printPanel := NewFlexLayout(app)
+	return app.SetRoot(flexPanel, true).EnableMouse(true), printPanel
 }
