@@ -8,18 +8,21 @@ import (
 func NewFlexLayout(app *tview.Application) *tview.Flex {
 
 	rightSide := tview.NewTextView().
-		SetText("==== message start ==== ")
+		SetText("==== message start ====")
 
 	var inputText string
 
 	leftSide := tview.NewInputField().
-		SetLabel(" Enter ").
+		SetLabel(" command >> ").
 		SetPlaceholder("Please enter your command").
+		SetFieldBackgroundColor(tcell.Color16).
 		SetChangedFunc(func(text string) {
 			inputText = text
 		})
 
 	doneInput := func () {
+		// TODO: gap need to be fixed if using grid border
+		// rightSide.SetText(rightSide.GetText(false) + "  " + inputText)
 		rightSide.SetText(rightSide.GetText(false) + inputText)
 		leftSide.SetText("")
 	}
@@ -30,8 +33,17 @@ func NewFlexLayout(app *tview.Application) *tview.Flex {
 		}
 	})
 
+	NewSection := func (item tview.Primitive) *tview.Grid {
+		return tview.NewGrid().
+			SetRows(3, 0, 3).
+			SetColumns(30, 0, 30).
+			// TODO: gap need to be fixed if using grid border
+			//SetBorders(true).
+			AddItem(item, 0, 0, 3, 3, 1, 1, false)
+	}
+
 	flex := tview.NewFlex().
-		AddItem(leftSide, 0, 1, false).
-		AddItem(rightSide, 0, 2, false)
+		AddItem(NewSection(leftSide), 0, 1, false).
+		AddItem(NewSection(rightSide), 0, 2, false)
 	return flex
 }
