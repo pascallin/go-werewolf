@@ -8,10 +8,11 @@ import (
 )
 
 type App struct {
-	Game      	*game.Game
-	User		*User
-	TCPClient 	*tcp.TCPClient
-	TCPServer 	*tcp.Server
+	CommandChan 	chan string
+	Game      		*game.Game
+	User			*User
+	TCPClient 		*tcp.TCPClient
+	TCPServer 		*tcp.Server
 }
 
 // getter and setter
@@ -46,7 +47,9 @@ var once sync.Once
 
 func GetApp() *App {
 	once.Do(func() {
-		instance = &App{}
+		instance = &App{
+			CommandChan: make(chan string),
+		}
 	})
 	return instance
 }
