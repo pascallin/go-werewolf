@@ -33,7 +33,7 @@ func RoundStart(number int, game *Game) {
 	listenTalking(game)
 	listenTVoting(game)
 	p := GetMostRoundVotingPlayer(game)
-	fmt.Println("exile player ==========", p)
+	fmt.Println("exile player", p)
 	p.Exile()
 }
 

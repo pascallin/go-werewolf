@@ -16,22 +16,26 @@ func genPlayers(count int) []Player {
 
 func randomKill(game *Game) *Player {
 	goodMan := GetGoodManLeft(game)
-	return goodMan[0]
+	ran, _ := genRandomList(len(goodMan))
+	return goodMan[ran[0]]
 }
 
 func randomCheck(game *Game) *Player {
 	man := GetManLeft(game)
-	return man[0]
+	ran, _ := genRandomList(len(man))
+	return man[ran[0]]
 }
 
 func randomPoison(game *Game) *Player {
 	man := GetManLeft(game)
-	return man[0]
+	ran, _ := genRandomList(len(man))
+	return man[ran[0]]
 }
 
 func randomVote(game *Game) *Player {
 	man := GetManLeft(game)
-	return man[0]
+	ran, _ := genRandomList(len(man))
+	return man[ran[0]]
 }
 
 func TestGameFlow(t *testing.T) {
