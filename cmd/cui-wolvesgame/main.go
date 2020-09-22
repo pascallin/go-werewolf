@@ -22,6 +22,7 @@ func main() {
 		g.ASCII = true
 	}
 	g.Cursor = true
+	g.Mouse = false
 
 	g.SetManagerFunc(cui.Layout)
 
