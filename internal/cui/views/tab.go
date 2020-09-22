@@ -6,23 +6,17 @@ import (
 )
 
 func Tab(g *gocui.Gui) error {
-	if v, err := g.SetView("v1", 10, 2, 30, 6); err != nil {
+	if v, err := g.SetView("v1", 10, 2, 60, 12); err != nil {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
 		fmt.Fprintln(v, "View #1")
 	}
-	if v, err := g.SetView("v2", 20, 4, 40, 8); err != nil {
-		if err != gocui.ErrUnknownView {
-			return err
-		}
-		fmt.Fprintln(v, "View #2")
+	if err := MessageList(g); err != nil {
+		return err
 	}
-	if v, err := g.SetView("v3", 30, 6, 50, 10); err != nil {
-		if err != gocui.ErrUnknownView {
-			return err
-		}
-		fmt.Fprintln(v, "View #3")
+	if err := TextInput(g); err != nil {
+		return err
 	}
 
 	if err := bindingTabKeys(g); err != nil {
@@ -44,6 +38,9 @@ func bindingTabKeys(g *gocui.Gui) error {
 
 	err = g.SetKeybinding("", '2', gocui.ModNone, func(g *gocui.Gui, v *gocui.View) error {
 		_, err := g.SetViewOnTop("v2")
+		if _, err := g.SetCurrentView("v2"); err != nil {
+			return err
+		}
 		return err
 	})
 	if err != nil {
@@ -52,6 +49,9 @@ func bindingTabKeys(g *gocui.Gui) error {
 
 	err = g.SetKeybinding("", '3', gocui.ModNone, func(g *gocui.Gui, v *gocui.View) error {
 		_, err := g.SetViewOnTop("v3")
+		if _, err := g.SetCurrentView("v3"); err != nil {
+			return err
+		}
 		return err
 	})
 	return nil
