@@ -7,6 +7,8 @@ echo said he is a good man
 git clone https://github.com/pascallin/go-wolvesgame
 go mod download
 go run ./cmd/cli-wolvesgame/main.go
+// or 
+go run ./cmd/cui-wolvesgame/main.go
 ```
 
 ## cli interaction
@@ -25,13 +27,8 @@ go test ./internal/game -v
 app logic
 - players connection
 
-game logic
-- game lifecycle
-- game round flow
-- role play
-
 network
 - lan scan
 
-experience
-- game history show
+ui
+- cui design
