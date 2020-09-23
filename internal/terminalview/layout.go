@@ -36,14 +36,6 @@ func NewFlexLayout(tviwe *tview.Application) (*tview.Flex, *tview.TextView) {
 	//	AddItem(command, 0, 0, 1, 3, 0, 0, false).
 	//	AddItem(NewSection(rightSide), 3, 0, 1, 3, 0, 0, false)
 
-	//doneInput := func () {
-	//	// TODO: gap need to be fixed if using grid border
-	//	// rightSide.SetText(rightSide.GetText(false) + "  " + inputText)
-	//	rightSide.SetText(rightSide.GetText(false) + inputText + "\n")
-	//	app.GetApp().CommandChan <- inputText
-	//	commandInput.SetText("")
-	//}
-
 	commandInput.SetDoneFunc(func(key tcell.Key) {
 		fmt.Println("here")
 		if key == tcell.KeyEnter && len(inputText) > 0 {
