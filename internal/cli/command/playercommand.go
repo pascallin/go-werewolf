@@ -14,7 +14,7 @@ var sayCommand = &cli.Command{
 	Usage:   "发言",
 	Action: func(ctx *cli.Context) error {
 		if ctx.Args().Len() == 0 {
-			fmt.Println("Error:发言内容不能为空！")
+			ctx.App.Writer.Write([]byte("Error:发言内容不能为空！"))
 			return nil
 		}
 		msg := ctx.Args().Slice()
@@ -32,7 +32,7 @@ var voteCommand = &cli.Command{
 	Action: func(ctx *cli.Context) error {
 		name := ctx.Args().Get(0)
 		if len(name) == 0 {
-			fmt.Println("Error:需要指定名称")
+			ctx.App.Writer.Write([]byte("Error:需要指定名称"))
 			return nil
 		}
 		// TODO: vote someone
@@ -48,7 +48,7 @@ var killCommand = &cli.Command{
 	Action: func(ctx *cli.Context) error {
 		name := ctx.Args().Get(0)
 		if len(name) == 0 {
-			fmt.Println("Error:需要指定名称")
+			ctx.App.Writer.Write([]byte("Error:需要指定名称"))
 			return nil
 		}
 		// TODO: kill vote someone
