@@ -1,6 +1,7 @@
 package command
 
 import (
+	"fmt"
 	"github.com/urfave/cli/v2"
 
 	"github.com/pascallin/go-wolvesgame/internal/app"
@@ -37,10 +38,14 @@ var createCommand = &cli.Command{
 	Flags:   createFlags,
 	Action: func(ctx *cli.Context) error {
 		c := app.GetApp()
+		if c.Game != nil {
+			ctx.App.Writer.Write([]byte("Game has been created"))
+			return nil
+		}
 		game := game.New()
 		c.SetGame(game)
-		c.SetTcpServer(tcp.NewServer())
-		c.SetTcpClient(tcp.NewClient())
+		c.SetTcpServer(tcp.NewServer(ctx.App.Writer))
+		c.SetTcpClient(tcp.NewClient(ctx.App.Writer))
 		return nil
 	},
 }
@@ -52,7 +57,7 @@ var joinCommand = &cli.Command{
 	Action: func(ctx *cli.Context) error {
 		// TODO: 判断是否在游戏中
 		c := app.GetApp()
-		c.SetTcpClient(tcp.NewClient())
+		c.SetTcpClient(tcp.NewClient(ctx.App.Writer))
 		return nil
 	},
 }
@@ -75,11 +80,11 @@ var startCommand = &cli.Command{
 		game.StartGame(g)
 
 		// run socket server
-		go tcp.NewServer()
+		go tcp.NewServer(ctx.App.Writer)
 
 		// create socket client
 		c := app.GetApp()
-		c.SetTcpClient(tcp.NewClient())
+		c.SetTcpClient(tcp.NewClient(ctx.App.Writer))
 
 		return nil
 	},
@@ -89,6 +94,10 @@ var gameCommands = &cli.Command{
 	Name:    		"game",
 	Aliases:	 	[]string{"g"},
 	Usage:   		"游戏操作",
+	Before: func(c *cli.Context) error {
+		fmt.Fprintf(c.App.Writer, "\n")
+		return nil
+	},
 	Subcommands: 	[]*cli.Command{
 		statusCommand,
 		startCommand,

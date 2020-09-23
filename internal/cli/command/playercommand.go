@@ -61,6 +61,10 @@ var playerCommands = &cli.Command{
 	Name:    		"player",
 	Aliases:	 	[]string{"i"},
 	Usage:   		"玩家操作",
+	Before: func(c *cli.Context) error {
+		fmt.Fprintf(c.App.Writer, "\n")
+		return nil
+	},
 	Subcommands: 	[]*cli.Command{
 		sayCommand,
 		voteCommand,

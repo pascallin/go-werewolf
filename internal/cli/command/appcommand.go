@@ -22,6 +22,10 @@ var helpCommand = &cli.Command{
 	Aliases:   []string{"h"},
 	Usage:     "展示帮助信息",
 	ArgsUsage: "[command]",
+	Before: func(c *cli.Context) error {
+		fmt.Fprintf(c.App.Writer, "\n")
+		return nil
+	},
 	Action: func(c *cli.Context) error {
 		args := c.Args()
 		if args.Present() {

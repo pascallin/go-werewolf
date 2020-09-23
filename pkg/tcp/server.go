@@ -1,6 +1,7 @@
 package tcp
 
 import (
+	"io"
 	"log"
 	"net"
 )
@@ -10,14 +11,14 @@ type Server struct {
 	listener net.Listener
 }
 
-func NewServer() *Server {
+func NewServer(writer io.Writer) *Server {
 	listener, err := net.Listen("tcp", "127.0.0.1:8080")
 	if err != nil {
 		log.Fatal("tcp server listener error:", err)
 	}
 
 	server := &Server{
-		newHub(),
+		newHub(writer),
 		listener,
 	}
 	go server.hub.run()

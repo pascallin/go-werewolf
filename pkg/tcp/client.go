@@ -3,6 +3,7 @@ package tcp
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"log"
 	"net"
 )
@@ -11,9 +12,10 @@ type TCPClient struct {
 	conn    net.Conn
 	send    chan []byte
 	receive chan []byte
+	writer	io.Writer
 }
 
-func NewClient() *TCPClient {
+func NewClient(writer io.Writer) *TCPClient {
 	// connect to this socket
 	conn, _ := net.Dial("tcp", "127.0.0.1:8080")
 	client := &TCPClient{
