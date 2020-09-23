@@ -11,6 +11,7 @@ func TextInput(g *gocui.Gui) error {
 		}
 		v.Editable = true
 		v.Wrap = true
+
 		if _, err := g.SetCurrentView("v3"); err != nil {
 			return err
 		}

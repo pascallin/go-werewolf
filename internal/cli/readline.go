@@ -1,8 +1,12 @@
 package cli
 
 import (
+	"fmt"
 	"github.com/chzyer/readline"
 	"github.com/pascallin/go-wolvesgame/internal/app"
+	"github.com/urfave/cli/v2"
+	"io"
+	"strings"
 )
 
 func filterInput(r rune) (rune, bool) {
@@ -26,4 +30,26 @@ func getReadline() *readline.Instance {
 		FuncFilterInputRune: filterInput,
 	})
 	return rl
+}
+
+func ListenReadline(terminal *cli.App) {
+	l := getReadline()
+
+	for {
+		line, err := l.Readline()
+		if err == readline.ErrInterrupt {
+			if len(line) == 0 {
+				break
+			} else {
+				continue
+			}
+		} else if err == io.EOF {
+			terminal.Run([]string{"app", "exit"})
+		}
+		line = strings.TrimSpace(line)
+		err = terminal.Run(strings.Fields("cmd " + line))
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
 }

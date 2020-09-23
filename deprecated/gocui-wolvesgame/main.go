@@ -7,7 +7,7 @@ import (
 	"github.com/jroimartin/gocui"
 	"github.com/mattn/go-runewidth"
 
-	"github.com/pascallin/go-wolvesgame/internal/cui"
+	"github.com/pascallin/go-wolvesgame/deprecated/cui"
 )
 
 func main() {
@@ -24,9 +24,9 @@ func main() {
 	g.Cursor = true
 	g.Mouse = false
 
-	g.SetManagerFunc(cui.Layout)
+	g.SetManagerFunc(gocui.Layout)
 
-	if err := cui.Keybindings(g); err != nil {
+	if err := gocui.Keybindings(g); err != nil {
 		log.Panicln(err)
 	}
 

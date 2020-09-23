@@ -1,4 +1,4 @@
-package cui
+package gocui
 
 import "github.com/jroimartin/gocui"
 

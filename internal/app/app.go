@@ -8,7 +8,6 @@ import (
 )
 
 type App struct {
-	CommandChan 	chan string
 	Game      		*game.Game
 	User			*User
 	TCPClient 		*tcp.TCPClient
@@ -48,7 +47,6 @@ var once sync.Once
 func GetApp() *App {
 	once.Do(func() {
 		instance = &App{
-			CommandChan: make(chan string),
 		}
 	})
 	return instance
