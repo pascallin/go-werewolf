@@ -7,6 +7,6 @@ import (
 func GetTerminalView(commandChan chan string) (*tview.Application, *tview.TextView){
 	app := tview.NewApplication()
 
-	flexPanel, printPanel := NewFlexLayout(app, commandChan)
+	flexPanel, printPanel := NewFlexLayout(commandChan)
 	return app.SetRoot(flexPanel, true).EnableMouse(true), printPanel
 }
