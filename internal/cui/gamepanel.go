@@ -10,7 +10,7 @@ import (
 )
 
 type GamePanel struct {
-	table *tview.Table
+	Table *tview.Table
 	offset int
 	players string
 }
@@ -44,13 +44,13 @@ func NewGamePanel() *GamePanel {
 	}
 
 	return &GamePanel{
-		table: table,
+		Table: table,
 		offset: rowOffset + 1,
 	}
 }
 
 func (gp *GamePanel) UpdateGameStatus(status game.Status) {
-	gp.table.SetCell(1, 1, NewValueCell(status.String()))
+	gp.Table.SetCell(1, 1, NewValueCell(status.String()))
 }
 
 /**
@@ -61,7 +61,7 @@ example:
 func (gp *GamePanel) AddPlayerToGamePanel(playerData string) {
 	row := strings.Split(playerData, " ")
 	for c, v := range row {
-		gp.table.SetCell(1 + gp.offset, c,
+		gp.Table.SetCell(1 + gp.offset, c,
 			tview.NewTableCell(v).
 				SetTextColor(tcell.ColorWhite).
 				SetAlign(tview.AlignCenter))

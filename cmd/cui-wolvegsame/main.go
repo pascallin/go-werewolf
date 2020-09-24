@@ -10,13 +10,17 @@ import (
 )
 
 func main() {
+	// initialize panels
 	printPanel := cui.NewCommandResultPanel()
 	err, terminal := commander.CreateCliApp(printPanel)
 	if err != nil {
 		log.Fatal(err)
 	}
 	commandPanel := cui.NewCommandInput(terminal)
-	flexPanel := cui.NewFlexLayout(commandPanel, printPanel, cui.NewMessagePanel())
+	gamePanel := cui.NewGamePanel()
+	flexPanel := cui.NewFlexLayout(commandPanel, printPanel, cui.NewMessagePanel(), gamePanel.Table)
+
+	// start tview app
 	view := tview.NewApplication()
 	view.SetRoot(flexPanel, true).EnableMouse(true)
 
