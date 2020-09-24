@@ -36,24 +36,22 @@ var (
 	}
 )
 
-func New() Game {
-	game := Game{
+func New() *Game {
+	return &Game{
 		PlayersCount:  	12,
 		Participants:  	0,
 		PlayerActions: 	NewActions(),
 		Lifecycle:     	make(chan Status),
 		RoundNumber: 	0,
 	}
-
-	return game
 }
 
-func (g *Game) PrintGameStatus() {
+func (g *Game) GameStatusJSON() string {
 	byteArray, err := json.MarshalIndent(g, "", "  ")
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(string(byteArray))
+	return string(byteArray)
 }
 
 func (g *Game) JoinPlayer(player Player) {
