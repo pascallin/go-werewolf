@@ -1,4 +1,4 @@
-package cli
+package commander
 
 import "github.com/chzyer/readline"
 
