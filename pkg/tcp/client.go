@@ -8,39 +8,38 @@ import (
 	"net"
 )
 
-type TCPClient struct {
+type Client struct {
 	conn    net.Conn
 	send    chan []byte
 	receive chan []byte
 	writer	io.Writer
 }
 
-func NewClient(writer io.Writer) *TCPClient {
-	// connect to this socket
-	conn, _ := net.Dial("tcp", "127.0.0.1:8080")
-	client := &TCPClient{
-		conn:    conn,
+func NewClient(writer io.Writer) *Client {
+	client := &Client{
 		send:    make(chan []byte, 256),
 		receive: make(chan []byte, 256),
 	}
-	go client.listen()
-	go client.pump()
 	return client
 }
 
-func (c *TCPClient) listen() {
+func (c *Client) Dia(url string) {
+	// connect to this socket
+	conn, _ := net.Dial("tcp", url)
+	c.conn = conn
+	go c.pump()
 	for {
 		message, _ := bufio.NewReader(c.conn).ReadBytes('\n')
 		c.receive <- message
 	}
 }
 
-func (c *TCPClient) Send(msg string) {
+func (c *Client) Send(msg string) {
 	// NOTE: need to add '\n' as line end
 	c.send <- []byte(msg + "\n")
 }
 
-func (c *TCPClient) pump() {
+func (c *Client) pump() {
 	defer func() {
 		c.conn.Close()
 	}()
@@ -60,7 +59,11 @@ func (c *TCPClient) pump() {
 				// TODO
 				continue
 			}
-			fmt.Println("client pump receive: " + string(message))
+			fmt.Fprintf(c.writer, "client pump receive: " + string(message))
 		}
 	}
+}
+
+func (c *Client) Close() {
+	c.conn.Close()
 }

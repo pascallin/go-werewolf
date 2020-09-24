@@ -7,29 +7,25 @@ import (
 )
 
 type Server struct {
-	hub      *Hub
-	listener net.Listener
+	hub      	*Hub
 }
 
 func NewServer(writer io.Writer) *Server {
-	listener, err := net.Listen("tcp", "127.0.0.1:8080")
-	if err != nil {
-		log.Fatal("tcp server listener error:", err)
-	}
-
 	server := &Server{
 		newHub(writer),
-		listener,
 	}
-	go server.hub.run()
-	go server.listen()
 
 	return server
 }
 
-func (s *Server) listen() {
+func (s *Server) Listen(port string) {
+	listener, err := net.Listen("tcp", "localhost:" + port)
+	if err != nil {
+		log.Fatal("tcp server listener error:", err)
+	}
+	go s.hub.run()
 	for {
-		conn, err := s.listener.Accept()
+		conn, err := listener.Accept()
 		if err != nil {
 			log.Fatal("tcp server accept error", err)
 			continue
