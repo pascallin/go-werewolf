@@ -9,6 +9,7 @@ import (
 	"github.com/pascallin/go-wolvesgame/pkg/tcp"
 )
 
+// NOTE: using default for now, no flags interactions
 var createFlags = []cli.Flag{
 	&cli.StringFlag{
 		Name:     "name",
@@ -55,7 +56,6 @@ var joinCommand = &cli.Command{
 	Aliases: []string{"j"},
 	Usage:   "加入游戏",
 	Action: func(ctx *cli.Context) error {
-		// TODO: 判断是否在游戏中
 		c := app.GetApp()
 		c.SetTcpClient(tcp.NewClient(ctx.App.Writer))
 		return nil
@@ -78,14 +78,6 @@ var startCommand = &cli.Command{
 		// add game
 		g := app.GetApp().GetGame()
 		game.StartGame(g)
-
-		// run socket server
-		go tcp.NewServer(ctx.App.Writer)
-
-		// create socket client
-		c := app.GetApp()
-		c.SetTcpClient(tcp.NewClient(ctx.App.Writer))
-
 		return nil
 	},
 }
