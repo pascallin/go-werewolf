@@ -6,8 +6,8 @@ import (
 
 	"github.com/urfave/cli/v2"
 
-	"github.com/pascallin/go-wolvesgame/internal/app"
 	"github.com/pascallin/go-wolvesgame/internal/commander"
+	"github.com/pascallin/go-wolvesgame/internal/werewolf"
 )
 
 func main() {
@@ -26,12 +26,12 @@ func main() {
 	}
 
 	console.Action = func(c *cli.Context) error {
-		app.GetApp().SetUser(app.NewUser(c.String("username")))
-		err, terminal := commander.CreateCliApp(nil)
+		gameApp := werewolf.New(c.String("username"), nil)
+		err, terminal := commander.CreateCliApp(gameApp, nil)
 		if err != nil {
 			return err
 		}
-		commander.ListenReadline(terminal)
+		commander.ListenReadline(gameApp, terminal)
 		return nil
 	}
 

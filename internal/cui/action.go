@@ -2,7 +2,7 @@ package cui
 
 import "github.com/rivo/tview"
 
-func addPlayerAction(form *tview.Form, selectFn func(label string)) {
+func AddPlayerAction(form *tview.Form, selectFn func(label string)) {
 	var selected string
 
 	// player dropdown picker
@@ -20,7 +20,7 @@ func addPlayerAction(form *tview.Form, selectFn func(label string)) {
 		})
 }
 
-func removePlayerAction(form *tview.Form) {
+func RemovePlayerAction(form *tview.Form) {
 	form.
 		RemoveFormItem(form.GetFormItemCount() - 1).
 		RemoveButton(0)

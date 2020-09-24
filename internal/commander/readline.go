@@ -2,11 +2,13 @@ package commander
 
 import (
 	"fmt"
-	"github.com/chzyer/readline"
-	"github.com/pascallin/go-wolvesgame/internal/app"
-	"github.com/urfave/cli/v2"
 	"io"
 	"strings"
+
+	"github.com/urfave/cli/v2"
+
+	"github.com/chzyer/readline"
+	"github.com/pascallin/go-wolvesgame/internal/werewolf"
 )
 
 func filterInput(r rune) (rune, bool) {
@@ -18,10 +20,9 @@ func filterInput(r rune) (rune, bool) {
 	return r, true
 }
 
-func getReadline() *readline.Instance {
-	user := app.GetApp().GetUser()
+func getReadline(username string) *readline.Instance {
 	rl, _ := readline.NewEx(&readline.Config{
-		Prompt: "\033[31mWerwolf("+ user.Nickname + ")»\033[0m ",
+		Prompt: "\033[31mWerwolf("+ username + ")»\033[0m ",
 		//HistoryFile:     "/tmp/readline.tmp",
 		AutoComplete:        completer,
 		InterruptPrompt:     "^C",
@@ -32,8 +33,8 @@ func getReadline() *readline.Instance {
 	return rl
 }
 
-func ListenReadline(terminal *cli.App) {
-	l := getReadline()
+func ListenReadline(gameApp *werewolf.App, terminal *cli.App) {
+	l := getReadline(gameApp.User.Nickname)
 
 	for {
 		line, err := l.Readline()

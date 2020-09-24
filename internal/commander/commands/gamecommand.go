@@ -2,51 +2,34 @@ package commands
 
 import (
 	"fmt"
+	"github.com/pascallin/go-wolvesgame/internal/werewolf"
 	"github.com/urfave/cli/v2"
 
-	"github.com/pascallin/go-wolvesgame/internal/app"
 	"github.com/pascallin/go-wolvesgame/internal/game"
-	"github.com/pascallin/go-wolvesgame/pkg/tcp"
 )
-
-// NOTE: using default for now, no flags interactions
-var createFlags = []cli.Flag{
-	&cli.StringFlag{
-		Name:     "name",
-		Value:    "狼人杀",
-		Usage:    "游戏名称",
-		Required: false,
-	},
-	&cli.IntFlag{
-		Name:     "people",
-		Aliases:  []string{"p"},
-		Value:    12,
-		Usage:    "参与人数",
-		Required: false,
-	},
-	&cli.IntFlag{
-		Name:     "port",
-		Value:    8000,
-		Usage:    "端口",
-		Required: false,
-	},
-}
 
 var createCommand = &cli.Command{
 	Name:    "create",
 	Aliases: []string{"c"},
 	Usage:   "创建游戏",
-	Flags:   createFlags,
+	Flags:    []cli.Flag{
+		&cli.IntFlag{
+			Name:     "port",
+			Value:    8080,
+			Usage:    "端口",
+			Required: true,
+		},
+	},
 	Action: func(ctx *cli.Context) error {
-		c := app.GetApp()
-		if c.Game != nil {
+		gameApp := ctx.Context.Value("gameApp").(*werewolf.App)
+		if gameApp.Game != nil {
 			ctx.App.Writer.Write([]byte("Game has been created"))
 			return nil
 		}
-		game := game.New()
-		c.SetGame(game)
-		c.SetTcpServer(tcp.NewServer(ctx.App.Writer))
-		c.SetTcpClient(tcp.NewClient(ctx.App.Writer))
+		gameApp.Game = game.New()
+		gameApp.User.JoinGame()
+		go gameApp.TCPServer.Listen(ctx.String("port"))
+		go gameApp.TCPClient.Dia("localhost:8080")
 		return nil
 	},
 }
@@ -55,9 +38,22 @@ var joinCommand = &cli.Command{
 	Name:    "join",
 	Aliases: []string{"j"},
 	Usage:   "加入游戏",
+	Flags:    []cli.Flag{
+		&cli.StringFlag{
+			Name:     "url",
+			Value:    "localhost:8080",
+			Usage:    "游戏服务器IP+端口",
+			Required: true,
+		},
+	},
 	Action: func(ctx *cli.Context) error {
-		c := app.GetApp()
-		c.SetTcpClient(tcp.NewClient(ctx.App.Writer))
+		gameApp := ctx.Context.Value("gameApp").(*werewolf.App)
+		if gameApp.Game != nil {
+			ctx.App.Writer.Write([]byte("You have been join a game"))
+			return nil
+		}
+		// TODO: url
+		go gameApp.TCPClient.Dia(ctx.String("url"))
 		return nil
 	},
 }
@@ -66,7 +62,8 @@ var statusCommand = &cli.Command{
 	Name:    "status",
 	Usage:   "显示游戏状态",
 	Action: func(ctx *cli.Context) error {
-		app.GetApp().GetGame().PrintGameStatus()
+		gameApp := ctx.Context.Value("gameApp").(*werewolf.App)
+		ctx.App.Writer.Write([]byte(gameApp.Game.GameStatusJSON()))
 		return nil
 	},
 }
@@ -75,9 +72,8 @@ var startCommand = &cli.Command{
 	Name:    "start",
 	Usage:   "开始游戏",
 	Action: func(ctx *cli.Context) error {
-		// add game
-		g := app.GetApp().GetGame()
-		game.StartGame(g)
+		gameApp := ctx.Context.Value("gameApp").(*werewolf.App)
+		game.StartGame(gameApp.Game)
 		return nil
 	},
 }

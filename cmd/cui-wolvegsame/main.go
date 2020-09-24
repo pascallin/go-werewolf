@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/pascallin/go-wolvesgame/internal/werewolf"
 	"log"
 
 	"github.com/rivo/tview"
@@ -12,13 +13,16 @@ import (
 func main() {
 	// initialize panels
 	printPanel := cui.NewCommandResultPanel()
-	err, terminal := commander.CreateCliApp(printPanel)
+	messagePanel := cui.NewMessagePanel()
+	// TODO: get username
+	gameApp := werewolf.New("Pascal", messagePanel)
+	err, terminal := commander.CreateCliApp(gameApp, printPanel)
 	if err != nil {
 		log.Fatal(err)
 	}
 	commandPanel := cui.NewCommandInput(terminal)
 	gamePanel := cui.NewGamePanel()
-	flexPanel := cui.NewFlexLayout(commandPanel, printPanel, cui.NewMessagePanel(), gamePanel.Table)
+	flexPanel := cui.NewFlexLayout(commandPanel, printPanel, messagePanel, gamePanel.Table)
 
 	// start tview app
 	view := tview.NewApplication()
