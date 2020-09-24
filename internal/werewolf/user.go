@@ -1,4 +1,4 @@
-package app
+package werewolf
 
 import (
 	"github.com/pascallin/go-wolvesgame/pkg/tcp"

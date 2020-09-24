@@ -1,4 +1,4 @@
-package app
+package werewolf
 
 type Messenger struct {
 
