@@ -9,6 +9,8 @@ go mod download
 go run ./cmd/cli-wolvesgame/main.go
 // or 
 go run ./cmd/cui-wolvesgame/main.go
+// PS: for win10 powershell, you should change shell text encode to unicode first
+chcp 65001 
 ```
 
 ## cli interaction
@@ -32,3 +34,6 @@ network
 
 ui
 - cui design
+
+user experience
+- game local cache(tmp file), reconnect
