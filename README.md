@@ -1,6 +1,21 @@
 # go-wolvesgame
 echo said he is a good man
 
+# structure
+
+## folder
+
+```shell script
+|- internal
+    |- game       // game logic
+    |- cli        // cli interface
+    |- cui        // cli ui interface
+    |- commander  // game control commands
+    |- werewolf   // app instance
+|- pkg            
+    |- tcp        // tcp client and server
+```          
+
 ## development
 
 ```shell script

@@ -8,7 +8,6 @@ import (
 	"github.com/urfave/cli/v2"
 
 	"github.com/chzyer/readline"
-	"github.com/pascallin/go-wolvesgame/internal/werewolf"
 )
 
 func filterInput(r rune) (rune, bool) {
@@ -33,7 +32,7 @@ func CreateReadline(username string) *readline.Instance {
 	return rl
 }
 
-func ListenReadline(gameApp *werewolf.App, terminal *cli.App, rl *readline.Instance) {
+func ListenReadline(terminal *cli.App, rl *readline.Instance) {
 	for {
 		line, err := rl.Readline()
 		if err == readline.ErrInterrupt {

@@ -10,7 +10,7 @@ import (
 	"github.com/pascallin/go-wolvesgame/internal/werewolf"
 )
 
-func CreateCliApp(app *werewolf.App, writer io.Writer) (error, *cli.App) {
+func New(app *werewolf.App, writer io.Writer) (error, *cli.App) {
 	cli.AppHelpTemplate = `{{if .Commands}}{{range .Commands}}{{if not .HideHelp}}{{join .Names ", "}}{{ "\t"}}{{.Usage}}{{ "\n" }}{{end}}{{end}}{{end}}`
 	terminal := cli.App{
 		Before: func(c *cli.Context) error {
