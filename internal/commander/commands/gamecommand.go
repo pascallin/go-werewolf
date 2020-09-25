@@ -52,7 +52,6 @@ var joinCommand = &cli.Command{
 			ctx.App.Writer.Write([]byte("You have been join a game"))
 			return nil
 		}
-		// TODO: url
 		go gameApp.TCPClient.Dia(ctx.String("url"))
 		return nil
 	},
@@ -73,6 +72,10 @@ var startCommand = &cli.Command{
 	Usage:   "开始游戏",
 	Action: func(ctx *cli.Context) error {
 		gameApp := ctx.Context.Value("gameApp").(*werewolf.App)
+		if gameApp.Game == nil {
+			ctx.App.Writer.Write([]byte("You have not join any game yet"))
+			return nil
+		}
 		game.StartGame(gameApp.Game)
 		return nil
 	},

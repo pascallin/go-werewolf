@@ -46,7 +46,7 @@ var killCommand = &cli.Command{
 	Action: func(ctx *cli.Context) error {
 		name := ctx.Args().Get(0)
 		if len(name) == 0 {
-			ctx.App.Writer.Write([]byte("Error:需要指定名称"))
+			ctx.App.Writer.Write([]byte("Error:需要指定玩家ID/名称"))
 			return nil
 		}
 		// TODO: kill vote someone

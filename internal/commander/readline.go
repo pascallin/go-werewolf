@@ -20,7 +20,7 @@ func filterInput(r rune) (rune, bool) {
 	return r, true
 }
 
-func getReadline(username string) *readline.Instance {
+func CreateReadline(username string) *readline.Instance {
 	rl, _ := readline.NewEx(&readline.Config{
 		Prompt: "\033[31mWerwolf("+ username + ")»\033[0m ",
 		//HistoryFile:     "/tmp/readline.tmp",
@@ -33,11 +33,9 @@ func getReadline(username string) *readline.Instance {
 	return rl
 }
 
-func ListenReadline(gameApp *werewolf.App, terminal *cli.App) {
-	l := getReadline(gameApp.User.Nickname)
-
+func ListenReadline(gameApp *werewolf.App, terminal *cli.App, rl *readline.Instance) {
 	for {
-		line, err := l.Readline()
+		line, err := rl.Readline()
 		if err == readline.ErrInterrupt {
 			if len(line) == 0 {
 				break
