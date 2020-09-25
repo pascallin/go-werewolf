@@ -1,6 +1,7 @@
 package main
 
 import (
+	cli2 "github.com/pascallin/go-wolvesgame/internal/cli"
 	"log"
 	"os"
 
@@ -27,12 +28,12 @@ func main() {
 
 	console.Action = func(c *cli.Context) error {
 		gameApp := werewolf.New(c.String("username"), os.Stdout)
-		rl := commander.CreateReadline(c.String("username"))
+		rl := cli2.CreateReadline(c.String("username"))
 		err, terminal := commander.CreateCliApp(gameApp, rl)
 		if err != nil {
 			return err
 		}
-		commander.ListenReadline(gameApp, terminal, rl)
+		cli2.ListenReadline(gameApp, terminal, rl)
 		return nil
 	}
 
