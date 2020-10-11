@@ -59,6 +59,16 @@ func (g *Game) JoinPlayer(player Player) {
 	g.Players = append(g.Players, player)
 }
 
+func (g *Game) RemovePlayer(player Player) {
+	g.Participants -= 1
+	for i, v := range g.Players {
+		if player.ID == v.ID {
+			// remove player
+			g.Players = append(g.Players[:i], g.Players[i+1:]...)
+		}
+	}
+}
+
 func (g *Game) AssignRoles() {
 	randomList, _ := genRandomList(g.Participants)
 	for i := range g.Players {
