@@ -27,7 +27,7 @@ func New(app *werewolf.App, writer io.Writer) (error, *cli.App) {
 		c.App.Writer.Write([]byte("Command not found. Type 'help' for a list of command. \n"))
 		return nil
 	}
-	// NOTE: define terminal writer
+	// NOTE: set terminal writer or using default os stdout
 	if writer != nil {
 		terminal.Writer = writer
 	}

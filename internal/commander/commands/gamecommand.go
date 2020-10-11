@@ -29,7 +29,7 @@ var createCommand = &cli.Command{
 		gameApp.Game = game.New()
 		gameApp.User.JoinGame()
 		go gameApp.TCPServer.Listen(ctx.String("port"))
-		go gameApp.TCPClient.Dia("localhost:8080")
+		go gameApp.TCPClient.Dia("localhost:" + ctx.String("port"))
 		return nil
 	},
 }
@@ -62,6 +62,10 @@ var statusCommand = &cli.Command{
 	Usage:   "显示游戏状态",
 	Action: func(ctx *cli.Context) error {
 		gameApp := ctx.Context.Value("gameApp").(*werewolf.App)
+		if gameApp.Game == nil {
+			ctx.App.Writer.Write([]byte("No game exist"))
+			return nil
+		}
 		ctx.App.Writer.Write([]byte(gameApp.Game.GameStatusJSON()))
 		return nil
 	},
