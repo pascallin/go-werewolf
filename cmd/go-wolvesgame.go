@@ -30,7 +30,7 @@ func main() {
 		&cli.BoolFlag{
 			Name: "ui",
 			Usage: "play with CUI",
-			Value: true,
+			Value: false,
 			Required: false,
 		},
 	}
