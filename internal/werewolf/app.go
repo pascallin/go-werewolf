@@ -1,6 +1,7 @@
 package werewolf
 
 import (
+	"fmt"
 	"io"
 	"os"
 
@@ -35,11 +36,19 @@ func (app *App) serverListen() {
 	for {
 		select {
 		case client := <- app.TCPServer.Register:
-			app.TCPServer.BroadcastMessage(client.ID.String() + "client joined")
-			//fmt.Fprint(app.messageWriter, client.ID.String() + "client joined")
+			fmt.Println("new client join.....")
+			app.TCPServer.BroadcastMessage("client 【" + client.ID.String() + "】joined")
+			app.Game.JoinPlayer(game.NewPlayer(app.Game.Participants + 1, client.ID.String()))
 		case client := <- app.TCPServer.Unregister:
-			//fmt.Fprint(app.messageWriter, client.ID.String() + "client left")
-			app.TCPServer.BroadcastMessage(client.ID.String() + "client left")
+			app.TCPServer.BroadcastMessage("client 【" + client.ID.String() + "】left")
+		case message := <- app.TCPServer.Receiver:
+			app.messageHandler(message)
 		}
 	}
+}
+
+func (app *App) messageHandler(message string) {
+	ms := MessageDecode(message)
+	// TODO: dispatch actions
+	app.TCPServer.BroadcastMessage( ms.Username + " said: " + ms.Content)
 }

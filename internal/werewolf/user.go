@@ -1,7 +1,6 @@
 package werewolf
 
 import (
-	"github.com/pascallin/go-wolvesgame/pkg/tcp"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -18,7 +17,6 @@ type User struct {
 	Uid         uuid.UUID
 	Nickname    string
 	Status		UserStatus
-	TCPClient   tcp.Client
 }
 
 func NewUser(nickname string) *User {
