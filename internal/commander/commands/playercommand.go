@@ -2,6 +2,8 @@ package commands
 
 import (
 	"fmt"
+	"github.com/pascallin/go-wolvesgame/internal/werewolf"
+	"strings"
 
 	"github.com/urfave/cli/v2"
 )
@@ -11,14 +13,20 @@ var sayCommand = &cli.Command{
 	Aliases: []string{"s"},
 	Usage:   "发言",
 	Action: func(ctx *cli.Context) error {
-		//if ctx.Args().Len() == 0 {
-		//	ctx.App.Writer.Write([]byte("Error:发言内容不能为空！"))
-		//	return nil
-		//}
-		//msg := ctx.Args().Slice()
-		//c := werewolf.GetApp()
-		//client := c.GetTcpClient()
-		//go client.Send("[" +c.GetUser().Nickname + " said]" + strings.Join(msg, " "))
+		gameApp := ctx.Context.Value("gameApp").(*werewolf.App)
+		if gameApp.Game == nil {
+			ctx.App.Writer.Write([]byte("No game exist"))
+			return nil
+		}
+		if ctx.Args().Len() == 0 {
+			ctx.App.Writer.Write([]byte("Error:发言内容不能为空！"))
+			return nil
+		}
+		msg := ctx.Args().Slice()
+		//go gameApp.TCPClient.Send("[" + gameApp.User.Nickname + " said]" + strings.Join(msg, " "))
+		go gameApp.TCPClient.Send(
+			werewolf.MessageEncode(
+				werewolf.Message{Content: strings.Join(msg, " ")}))
 		return nil
 	},
 }
