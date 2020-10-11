@@ -27,7 +27,7 @@ func NewServer() *Server {
 }
 
 func (s *Server) Listen(port string) {
-	listener, err := net.Listen("tcp", "localhost:" + port)
+	listener, err := net.Listen("tcp", ":" + port)
 	if err != nil {
 		log.Fatal("tcp server listener error:", err)
 	}
@@ -41,7 +41,7 @@ func (s *Server) listenRegister(listener net.Listener) {
 			log.Fatal("tcp server accept error", err)
 			continue
 		}
-		s.registerConnClient(conn)
+		go s.registerConnClient(conn)
 	}
 }
 
@@ -58,7 +58,7 @@ func (s *Server) registerConnClient(conn net.Conn) {
 
 	defer func() {
 		client.close()
-		s.unregisterConnClient(client)
+		go s.unregisterConnClient(client)
 	}()
 	for {
 		message, err := bufio.NewReader(client.conn).ReadString('\n')
@@ -77,8 +77,12 @@ func (s *Server) unregisterConnClient(client *ConnClient) {
 	s.Unregister <- client
 }
 
-func (s *Server) BroadcastMessage(message string) {
+func (s *Server) BroadcastMessage(message string) error {
 	for client := range s.clients {
-		client.send(message)
+		err := client.send(message)
+		if err != nil {
+			return err
+		}
 	}
+	return nil
 }

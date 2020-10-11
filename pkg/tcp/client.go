@@ -29,7 +29,7 @@ func (c *Client) Dia(url string) {
 	// connect to this socket
 	conn, err := net.Dial("tcp", url)
 	if err != nil {
-		fmt.Fprintf(c.writer, "could not dial url: " + url + "\n")
+		fmt.Fprintln(c.writer, "Could not dial url: " + url)
 		return
 	}
 	c.conn = conn
