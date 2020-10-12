@@ -28,6 +28,12 @@ go run ./cmd/cui-wolvesgame/main.go
 chcp 65001 
 ```
 
+### testing
+
+```shell script
+go test .\internal\game\ -v
+```
+
 ## cli interaction
 
 please run help

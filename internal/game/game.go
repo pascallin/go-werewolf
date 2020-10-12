@@ -2,7 +2,6 @@ package game
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 )
 
@@ -52,77 +51,4 @@ func (g *Game) GameStatusJSON() string {
 		fmt.Println(err)
 	}
 	return string(byteArray)
-}
-
-func (g *Game) JoinPlayer(player Player) {
-	g.Participants += 1
-	g.Players = append(g.Players, player)
-}
-
-func (g *Game) RemovePlayer(player Player) {
-	g.Participants -= 1
-	for i, v := range g.Players {
-		if player.ID == v.ID {
-			// remove player
-			g.Players = append(g.Players[:i], g.Players[i+1:]...)
-		}
-	}
-}
-
-func (g *Game) AssignRoles() {
-	randomList, _ := genRandomList(g.Participants)
-	for i := range g.Players {
-		g.Players[i].InitRole(Roles12[randomList[i]])
-	}
-}
-
-func (g *Game) CheckGameOver() bool {
-	var villagerCount int
-	var werewolfCount int
-	var godCount int
-	for _, player := range GetManLeft(g) {
-		if player.Type == Werewolf {
-			werewolfCount++
-		}
-		if player.Type == Villager {
-			villagerCount++
-		}
-		if player.Type != Villager && player.Type != Werewolf {
-			godCount++
-		}
-	}
-	// side killed
-	if villagerCount == 0 || werewolfCount == 0 || godCount == 0 {
-		return true
-	}
-	return false
-}
-
-func StartGame(game *Game) error {
-	game.Lifecycle <- Waiting
-
-	if game.PlayersCount != game.Participants {
-		return errors.New("no enough players")
-	}
-	game.AssignRoles()
-
-	game.Lifecycle <- Ready
-
-	var i = 1
-	for {
-		game.RoundNumber = i
-		RoundStart(i, game)
-		if game.CheckGameOver() {
-			break
-		}
-		i++
-		continue
-	}
-	game.GameOver()
-	return nil
-}
-
-func (g *Game) GameOver() {
-	fmt.Println("============= game over =============")
-	g.Lifecycle <- Over
 }

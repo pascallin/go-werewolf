@@ -4,64 +4,57 @@ import (
 	"fmt"
 )
 
-func RoundStart(number int, game *Game) {
-	manLeft := GetManLeft(game)
+func (g *Game) RoundStart(number int) {
+	manLeft := g.GetManLeft()
 	for i := range manLeft {
 		manLeft[i].clearRoundVoted()
 	}
 	// NOTE: night actions
-	game.Lifecycle <- WaitingNightPlayerAction
+	g.Lifecycle <- WaitingNightPlayerAction
 	fmt.Println("============ round ============", number)
-	killed := <-game.PlayerActions.WerewolfKill
-	fmt.Println("WerewolfAction kill ============", killed)
+	killed := <-g.PlayerActions.WerewolfKill
 	killed.BeKilled()
 
-	saw := <-game.PlayerActions.SeerCheck
-	fmt.Println("Seer check ============", saw.IsWerewolf())
-	poison := <-game.PlayerActions.UsePoison
+	<-g.PlayerActions.SeerCheck
+	poison := <-g.PlayerActions.UsePoison
 	if poison != nil {
-		fmt.Println("UsePoison kill ============", poison)
 		poison.BeKilled()
 	}
-	antidote := <-game.PlayerActions.UseAntidote
+	antidote := <-g.PlayerActions.UseAntidote
 	if antidote {
-		fmt.Println("UseAntidote save ============")
 		killed.BeSaved()
 	}
 	// NOTE: day actions
-	game.Lifecycle <- WaitingDayPlayerAction
-	listenTalking(game)
-	listenTVoting(game)
-	p := GetMostRoundVotingPlayer(game)
+	g.Lifecycle <- WaitingDayPlayerAction
+	g.listenTalking()
+	g.listenTVoting()
+	p := g.GetMostRoundVotingPlayer()
 	fmt.Println("exile player", p)
 	p.Exile()
 }
 
-func listenTalking(game *Game) {
-	talking := GetManLeft(game)
+func (g *Game) listenTalking() {
+	talking := g.GetManLeft()
 	var talked = 0
 	var talkingEnd = false
-	fmt.Println("Talking ============", len(talking))
 	for !talkingEnd {
 		select {
-		case playerTalked := <-game.PlayerActions.TalkedCount:
+		case playerTalked := <-g.PlayerActions.TalkedCount:
 			talked += playerTalked
 			if talked == len(talking) {
 				talkingEnd = true
 			}
 		}
 	}
-	fmt.Println("Talking End ============")
 }
 
-func listenTVoting(game *Game) {
-	voting := GetManLeft(game)
+func (g *Game) listenTVoting() {
+	voting := g.GetManLeft()
 	var voted = 0
 	var voteEnd = false
-	fmt.Println("Voting ============", len(voting))
 	for !voteEnd {
 		select {
-		case player := <-game.PlayerActions.Voting:
+		case player := <-g.PlayerActions.Voting:
 			voted++
 			player.RoundVoted++
 			if voted == len(voting) {
@@ -69,5 +62,4 @@ func listenTVoting(game *Game) {
 			}
 		}
 	}
-	fmt.Println("Voting End ============")
 }

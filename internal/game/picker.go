@@ -1,6 +1,6 @@
 package game
 
-func GetGoodManLeft(game *Game) []*Player {
+func (game *Game) GetGoodManLeft() []*Player {
 	var ps []*Player
 	for i, player := range game.Players {
 		if !player.IsWerewolf() && player.IsAlive() {
@@ -10,7 +10,7 @@ func GetGoodManLeft(game *Game) []*Player {
 	return ps
 }
 
-func GetManLeft(game *Game) []*Player {
+func (game *Game) GetManLeft() []*Player {
 	var ps []*Player
 	for i, player := range game.Players {
 		if player.IsAlive() {
@@ -20,7 +20,7 @@ func GetManLeft(game *Game) []*Player {
 	return ps
 }
 
-func GetMostRoundVotingPlayer(game *Game) *Player {
+func (game *Game) GetMostRoundVotingPlayer() *Player {
 	var p *Player
 	for i, player := range game.Players {
 		if player.IsAlive() {

@@ -1,6 +1,7 @@
 package game
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 	"testing"
@@ -14,30 +15,6 @@ func genPlayers(count int) []Player {
 	return players
 }
 
-func randomKill(game *Game) *Player {
-	goodMan := GetGoodManLeft(game)
-	ran, _ := genRandomList(len(goodMan))
-	return goodMan[ran[0]]
-}
-
-func randomCheck(game *Game) *Player {
-	man := GetManLeft(game)
-	ran, _ := genRandomList(len(man))
-	return man[ran[0]]
-}
-
-func randomPoison(game *Game) *Player {
-	man := GetManLeft(game)
-	ran, _ := genRandomList(len(man))
-	return man[ran[0]]
-}
-
-func randomVote(game *Game) *Player {
-	man := GetManLeft(game)
-	ran, _ := genRandomList(len(man))
-	return man[ran[0]]
-}
-
 func TestGameFlow(t *testing.T) {
 	game := New()
 
@@ -46,36 +23,24 @@ func TestGameFlow(t *testing.T) {
 		game.JoinPlayer(p)
 	}
 
-	go StartGame(&game)
+	go game.Start()
 
 	// NOTE: fake player user actions
 	for {
 		select {
 		case s := <-game.Lifecycle:
 			if s == WaitingNightPlayerAction {
-				game.PlayerActions.WerewolfKill <- randomKill(&game)
-				game.PlayerActions.SeerCheck <- randomCheck(&game)
-				if game.RoundNumber == 1 {
-					game.PlayerActions.UsePoison <- randomPoison(&game)
-				} else {
-					game.PlayerActions.UsePoison <- nil
-				}
-				if game.RoundNumber == 2 {
-					game.PlayerActions.UseAntidote <- true
-				} else {
-					game.PlayerActions.UseAntidote <- false
-				}
+				ai_werewolfAction(game)
+				ai_seerAction(game)
+				ai_poisonAction(game)
+				ai_antidoteAction(game)
 			}
 			if s == WaitingDayPlayerAction {
-				for range GetManLeft(&game) {
-					game.PlayerActions.TalkedCount <- 1
-				}
-				for range GetManLeft(&game) {
-					game.PlayerActions.Voting <- randomVote(&game)
-				}
+				ai_talking(game)
+				ai_voting(game)
 			}
 			if s == Over {
-				game.PrintGameStatus()
+				fmt.Println(game.GameStatusJSON())
 				os.Exit(0)
 			}
 		}
