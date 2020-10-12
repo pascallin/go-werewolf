@@ -80,7 +80,7 @@ var startCommand = &cli.Command{
 			ctx.App.Writer.Write([]byte("You have not join any game yet"))
 			return nil
 		}
-		game.StartGame(gameApp.Game)
+		gameApp.Game.Start()
 		return nil
 	},
 }
